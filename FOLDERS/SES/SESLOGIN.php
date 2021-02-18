@@ -1,0 +1,10 @@
+<?php
+    session_start();
+    if(!(empty($_SESSION['userid']))){
+        if($_SESSION['usertype']=='admin'){
+            header("Location:admin.php");
+        }else{
+        header("Location:index1.php");
+        }
+    }
+?>
