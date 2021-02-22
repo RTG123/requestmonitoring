@@ -34,7 +34,7 @@ require_once('../FOLDERS/SES/SESUSER.php'); // CONNECTION
 
     </head>
 
-    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['status'];?>">
+    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['confirmation'];?>">
      <!-- ⭐⭐⭐ HEADER & SIDE BAR ⭐⭐⭐ -->
         <!-- Preloader -->
         <div class="preloader">
@@ -882,6 +882,19 @@ require_once('../FOLDERS/SES/SESUSER.php'); // CONNECTION
 
         
   <script>
+   function success(){
+            $.toast({
+            heading: 'Successfully Updated',
+            text: "The data has been succesfully updated",
+            position: 'top-right',
+            loaderBg: '#247f34',
+            icon: 'success',
+            hideAfter: 4000,
+            bgColor:'#2b993e',
+            stack: false
+            });
+            <?php $_SESSION['confirmation'] = '';?>
+        }
   function select(){
     var x = document.getElementById("sel1").value;
     if(x=="QAD"){

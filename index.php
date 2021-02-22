@@ -155,7 +155,8 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                              <?php
                                                      date_default_timezone_set('Singapore');
                                                     $datetoday =date('m/d/Y');
-                                                    $count = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.qadlog where dateprocessed='$datetoday'");
+                                                    $userid = $_SESSION['userid'];
+                                                    $count = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.qadlog where dateprocessed='$datetoday' and userid='$userid'");
                                                     $row = sqlsrv_fetch_array($count);
                                                 ?>  
                                         <li>
@@ -180,7 +181,8 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                              <?php
                                                      date_default_timezone_set('Singapore');
                                                     $datetoday =date('m/d/Y');
-                                                    $count = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.lasyslog where dateprocessed='$datetoday'");
+                                                    $userid = $_SESSION['userid'];
+                                                    $count = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.lasyslog where dateprocessed='$datetoday' and userid='$userid'");
                                                     $row = sqlsrv_fetch_array($count);
                                                 ?>  
                                         <li>
@@ -205,10 +207,11 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                                     date_default_timezone_set('Singapore');
                                                     $combi=0;
                                                     $datetoday =date('m/d/Y');
-                                                    $count = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.nonlasyslog where dateprocessed='$datetoday'");
+                                                    $userid = $_SESSION['userid'];
+                                                    $count = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.nonlasyslog where dateprocessed='$datetoday' and userid='$userid'");
                                                     $row = sqlsrv_fetch_array($count);
                                                     $combi=$row['cntr'];
-                                                    $count1 = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.padlog where dateprocessed='$datetoday'");
+                                                    $count1 = sqlsrv_query($conn, "SELECT COUNT(*) AS cntr FROM requestmonitoring.dbo.padlog where dateprocessed='$datetoday' and userid='$userid'");
                                                     $row1 = sqlsrv_fetch_array($count1);
                                                     $combi=$combi + $row1['cntr']
                                                 ?>  
@@ -233,10 +236,11 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                             <?php
                                                 date_default_timezone_set('Singapore');
                                                 $datetoday =date('m/d/Y');
-                                                $count = sqlsrv_query($conn, "SELECT COUNT(ID)AS cntr FROM requestmonitoring.dbo.mcnewuser where dateprocessed='$datetoday' union all
-                                                SELECT COUNT(ID) FROM requestmonitoring.dbo.mcpasswordrequest where dateprocessed='$datetoday' union all
-                                                SELECT COUNT(ID) FROM requestmonitoring.dbo.mcregistrationchange where dateprocessed='$datetoday' union all
-                                                SELECT COUNT(ID) FROM requestmonitoring.dbo.mcrequestrecord where dateprocessed='$datetoday';
+                                                $userid = $_SESSION['userid'];
+                                                $count = sqlsrv_query($conn, "SELECT COUNT(ID)AS cntr FROM requestmonitoring.dbo.mcnewuser where dateprocessed='$datetoday' and userid='$userid' union all
+                                                SELECT COUNT(ID) FROM requestmonitoring.dbo.mcpasswordrequest where dateprocessed='$datetoday' and userid='$userid' union all
+                                                SELECT COUNT(ID) FROM requestmonitoring.dbo.mcregistrationchange where dateprocessed='$datetoday' and userid='$userid' union all
+                                                SELECT COUNT(ID) FROM requestmonitoring.dbo.mcrequestrecord where dateprocessed='$datetoday' and userid='$userid';
                                                 ");
                                                 $counter=0;
                                                 while( $row = sqlsrv_fetch_array( $count, SQLSRV_FETCH_ASSOC) ) {

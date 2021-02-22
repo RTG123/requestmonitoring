@@ -1,67 +1,73 @@
 <?php
- $userid         = $_POST['user_id'];
- $username        = $_POST['user_name'];
- $position        = $_POST['position'];
- $usertype         = $_POST['user_type'];
- $firstname         = $_POST['first_name'];
+ require_once('../connect.php'); // CONNECTION 
+ session_start();
+ $userid             = $_POST['user_id'];
+ $usertype           = $_POST['user_type'];
+ $username           = $_POST['user_name'];
+ $firstname          = $_POST['first_name'];
  $middlename         = $_POST['middle_name'];
-  $lastname         = $_POST['last_name'];
-  $sectiondepartment         = $_POST['section_department'];
-  $password         = $_POST['pass_word'];
-  $compassword         = $_POST['conpass_word'];
-// user_image
-        $userid           =$_SESSION['userid'];
-        $requestnumber    ="";
-        $selector         = $_POST['selector'];
-        $requestor        =$_POST['requestor'];
-        // $section          = $_POST['section'];
-        $department       = $_POST['department'];
-        $natureofrequest  = $_POST['nor'];
-        $daterequested    = $_POST['daterequested'];
-        $datereceived     = $_POST['datereceived'];
-        $details          = $_POST['details'];
+ $lastname           = $_POST['last_name'];
+ $position           = $_POST['position'];
+ $sectiondepartment  = $_POST['section_department'];
+ $password1           = $_POST['pass_word'];
+ $compassword        = $_POST['conpass_word'];
+    $attachment       = $_FILES['user_image']['name'];
+    $attachment1      =$_FILES['user_image']['tmp_name'];
+    $fileext = $_FILES["user_image"]["type"];
+        $fileext1 = $_FILES["user_image"]["size"];
+    $target = "../images/".basename($attachment);
+    if($fileext=="image/png" || $fileext=="image/jpeg" || $fileext=="image/jpg" || 
+    $fileext=="application/pdf" and $_FILES['user_image']['size']<400000 ){
+    if (move_uploaded_file($attachment1 , $target)) {
+      $msg = "Image uploaded successfully";
+    //   echo $msg;
+    // $_SESSION['status'] = 'success()'; 
+    // header("Location: http://localhost/FORMS/addform.php");
+    }else{
+    $msg = "Failed to upload image";
+    // echo $msg;
+    // $_SESSION['status'] = 'invalid()'; 
+    // header("Location: ../adminaccountsetting.php");
+    }
+    }else{
+      $msg = "Failed to upload image";
+    // $_SESSION['status'] = 'invalid()'; 
+    // header("Location: ../adminaccountsetting.php");
+    }
+    if(empty($attachment)){
+      $attachment="test1.png";
+    }
 
-        $systemusername   = $_POST['sysusername'];
-        $systemuser       = $_POST['sysuser'];
-        $usertype         = $_POST['usertype'];
-        $dateregistered   = $_POST['inputdatereg'];
-        $infocard         = $_POST['infocard'];
-        $reasonforapplication   = $_POST['reasonforapp'];
-        $datechange       = $_POST['datecan'];
-        $datereset      = $_POST['datereset'];
-        $information      = $_POST['information'];
-        $implementationdate   = $_POST['impdate'];
-        $dateapproved     = $_POST['dateapproved'];
-        $datedone         = $_POST['datedone'];
-        $accomplished     = $_POST['accb'];
-        $remarks          = $_POST['remarks'];
-        $candel           = $_POST['canc'];
-        // for attachment handling
-        $attachment       = $_FILES['atta']['name'];
-        $attachment1      =$_FILES['atta']['tmp_name'];
-        $fileext = $_FILES["atta"]["type"];
-            $fileext1 = $_FILES["atta"]["size"];
-        $target = "../images/".basename($attachment);
-        if($fileext=="image/png" || $fileext=="image/jpeg" || $fileext=="image/jpg" || 
-        $fileext=="application/pdf" and $_FILES['atta']['size']<400000 ){
-        if (move_uploaded_file($attachment1 , $target)) {
-        //   $msg = "Image uploaded successfully";
-        //   echo $msg;
-        $_SESSION['status'] = 'success()'; 
-        // header("Location: http://localhost/FORMS/addform.php");
-        }else{
-        $msg = "Failed to upload image";
-        echo $msg;
-        $_SESSION['status'] = 'invalid()'; 
-        header("Location: ../index1.php");
-        }
-        }else{
-        $_SESSION['status'] = 'invalid()'; 
-        header("Location: ../index1.php");
-        }
-        $refyear = date("y");
-        date_default_timezone_set('Singapore');
-        $dateprocessed = date("m/d/Y");
-
+ $sql = "SELECT * FROM logindata WHERE userid = '$userid'"; // sql for server
+ $stmt = sqlsrv_query( $conn, $sql );
+ if($row_count = sqlsrv_has_rows( $stmt )>0){
+   $_SESSION['status'] = 'fa123()';
+  header("Location: ../adminaccountsetting.php");
+  // echo "Error";
+}else if($password1 != $compassword){
+  $_SESSION['status'] = 'fa456()';
+  header("Location: ../adminaccountsetting.php");
+  echo "Error 2";
+ }else{
+//         // for attachment handling
+        $sql1 = "INSERT INTO requestmonitoring.dbo.logindata (userid,usertype,username,firstname,middlename,lastname,position,[section-department],password1,profpic) 
+        VALUES ('$userid','$usertype','$username','$firstname','$middlename','$lastname','$position','$sectiondepartment','$password1','$attachment')";
+             $stmt = sqlsrv_query( $conn, $sql1);
+          $_SESSION['status'] = 'success123()';
+          header("Location: ../adminaccountsetting.php");
+      //   $refyear = date("y");
+      //   date_default_timezone_set('Singapore');
+      //   $dateprocessed = date("m/d/Y");
+      //     echo $userid."</br>";
+      //     echo $username."</br>";
+      //     echo $position."</br>";
+      //     echo $usertype."</br>";
+      //     echo $firstname."</br>";
+      //     echo $middlename."</br>";
+      //     echo $lastname."</br>";
+      //     echo $sectiondepartment."</br>";
+      //     echo $password."</br>";
+      //     echo $compassword."</br>";
+      }
 
 ?>

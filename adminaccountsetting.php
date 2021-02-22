@@ -526,6 +526,45 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
             });
             <?php $_SESSION['status'] = '';?>
         }
+        function fa123(){
+            $.toast({
+            heading: 'Unable to Add User',
+            text: 'User ID already taken.',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });
+            <?php $_SESSION['status'] = '';?>
+        }
+        function fa456(){
+            $.toast({
+            heading: 'Unable to Add User',
+            text: 'Password & Confirm Password does not match.',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });
+            <?php $_SESSION['status'] = '';?>
+        }
+        function success123(){
+            $.toast({
+            heading: 'Successfully Added',
+            text: 'You have successfully added an account',
+            position: 'top-right',
+            loaderBg: '#247f34',
+            icon: 'success',
+            hideAfter: 4000,
+            bgColor:'#2b993e',
+            stack: false
+            });
+            <?php $_SESSION['status'] = '';?>
+        }
         function invaliddata2(){
             $.toast({
             heading: 'Unable to Update',
@@ -578,6 +617,7 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
             });
             <?php $_SESSION['status'] = '';?>
         }
+        
         </script>
         <script>
         function unsee(){

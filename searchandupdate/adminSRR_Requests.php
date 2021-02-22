@@ -377,7 +377,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">VIEW REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">EDIT REPORT</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -1115,6 +1115,19 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
             $.toast({
             heading: 'Successfully Deleted',
             text: "The data has been succesfully deleted",
+            position: 'top-right',
+            loaderBg: '#247f34',
+            icon: 'success',
+            hideAfter: 4000,
+            bgColor:'#2b993e',
+            stack: false
+            });
+            <?php $_SESSION['confirmation'] = '';?>
+        }
+        function success(){
+            $.toast({
+            heading: 'Successfully Updated',
+            text: "The data has been succesfully updated",
             position: 'top-right',
             loaderBg: '#247f34',
             icon: 'success',
