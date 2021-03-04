@@ -64,7 +64,7 @@ require_once('FOLDERS/SES/SESLOGIN.php'); // CONNECTION
                    </div>             
                 </div><!-- **** END OF PASSWORD **** -->
                 <p id="wrong" class="w3-center w3-animate-right" style="display:none; color:#000;background-color:#ffdddd ">INVALID USERNAME OR PASSWORD</p>
-            	<a href="forgotpass.php">Forgot Password?</a>
+            	<a >  &nbsp  </a>
                 
             	<input type="submit" class="btn" name="login" value="Login">
             </form>

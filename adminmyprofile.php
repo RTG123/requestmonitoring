@@ -55,7 +55,7 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                     <!-- Dropdown User -->
                     <ul class="nav navbar-top-links navbar-right pull-right">
                         <li class="dropdown">
-                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="images/<?php echo $_SESSION['profpic']?>" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?php echo $_SESSION['firstname']?></b><span class="caret"></span> </a>
+                        <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="images/<?php echo $_SESSION['profpic']?>" alt="user-img" width="36" class="img-circle"><?php echo $_SESSION['firstname']?><span class="caret"></span> </a>
                             <ul class="dropdown-menu dropdown-user animated flipInY">
                                 <li>
                                     <div class="dw-user-box">
@@ -67,7 +67,7 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                                 <div class="u-text">
                                                     <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
                                                     <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
-                                                    <a href="#" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
+                                                    <a href="adminmyprofile.php" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -149,15 +149,15 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                 <div class="user-btm-box">
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-purple"><i class="ti-pencil-alt"></i></p>
-                                        <h5>Added Reuqest FY- <?php echo date('Y');?></h5>
+                                        <h5>Added Request FY- <?php echo date('Y');?></h5>
                                         <h1><?php echo $_SESSION["total"];?></h1> </div>
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-blue"><i class="ti-write"></i></p>
-                                        <h5>Pending Reuqest FY- <?php echo date('Y');?></h5>
+                                        <h5>Pending Request FY- <?php echo date('Y');?></h5>
                                         <h1><?php echo $_SESSION["pending"];?></h1> </div>
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-danger"><i class="ti-files"></i></p>
-                                        <h5>This Month's Reuqest</h5>
+                                        <h5>This Month's Request</h5>
                                         <h1><?php echo $_SESSION["month1"]+$_SESSION["month2"];?></h1> </div>
                                 </div>
                             </div>
@@ -193,9 +193,9 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                                 <br>
                                                 <p class="text-muted"><?php echo $_SESSION['usertype'];?></p>
                                             </div>
-                                            <div class="col-md-3 col-xs-6"> <strong>Username</strong>
+                                            <div class="col-md-3 col-xs-6"> <strong>Position</strong>
                                                 <br>
-                                                <p class="text-muted"><?php echo $_SESSION['username'];?></p>
+                                                <p class="text-muted"><?php echo $_SESSION['position'];?></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -232,7 +232,7 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                 <div class="tab-pane" id="settings">
                                     <form class="form-horizontal form-material" method="POST" action="database/updateprof.php" name="updateForm" onsubmit="return validateForm()" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label class="col-md-12">User Profile</label>
+                                            <label class="col-md-12">User Profile Picture</label>
                                             <div class="col-md-12">
                                                 <input type="file" accept=".png, .jpg, .jpeg"  class="form-control form-control-line" name="user_image"> 
                                             </div>
@@ -261,12 +261,7 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                                 <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['section-department'];?>" name="user_team" >
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="col-md-12">Username</label>
-                                            <div class="col-md-12">
-                                                <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['username'];?>" name="user_name" > 
-                                            </div>
-                                        </div>
+                                        
                                         <div  style= " border: 1px solid green; padding: 10px; margin-bottom:10px;">
                                         <h4>Change Password: </h4>
                                         <div class="form-group">
@@ -326,22 +321,24 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                         <div class="form-group">
                                             <label class="col-md-12">User Profile</label>
                                             <div class="col-md-12">
-                                                <input type="file" accept=".png, .jpg, .jpeg"  class="form-control form-control-line" name="user_image"> 
+                                                <input type="file" accept=".png, .jpg, .jpeg" class="form-control form-control-line" name="user_image"> 
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-md-12">Associate Number</label>
+                                            <label class="col-md-12">Associate Number / Username</label>
                                             <div class="col-md-12">
-                                                <input type="text" class="form-control form-control-line" placeholder="User ID" name="user_id" required> 
+                                                <input type="text" id="assocnum" pattern="[0-9].{5,10}" minlength="7" maxlength="10" title="Only Numbers are allowed on this field" class="form-control form-control-line" 
+                                                onchange="myFunction()"
+                                                placeholder="User ID" name="user_id" required> 
                                             </div>
+                                            <p id="notif"style="display:none"><span class="msg" style="font-size:13px; color:#fc050d;
+                                            padding-left: 10px; padding-right:10px; mari" >User Id already taken.</span></p>
                                         </div>
+
                                         <div class="form-group">
-                                            <label class="col-md-6">Username</label>
-                                            <label class="col-md-6">Position</label>
-                                            <div class="col-md-6">
-                                                <input type="text" class="form-control form-control-line" placeholder="Username" name="user_name" required > 
-                                            </div>
-                                            <div class="col-md-6">
+                                            <label class="col-md-12">Position</label>
+                                            
+                                            <div class="col-md-12">
                                                 <input type="text" class="form-control form-control-line" placeholder="Position" name="position" required > 
                                             </div>
                                         </div>
@@ -630,6 +627,36 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                 current.setCustomValidity('Please fill it up first');
             }
         }
+        function myFunction() {
+            var x = document.getElementById("notif");
+            var qwe = document.getElementById("assocnum").value ;
+            var test ;
+            var status = 0;
+            var finalstatus;
+                // alert(qwe);
+                // <?php $test = 0;
+                 $sql = "SELECT * FROM requestmonitoring.dbo.logindata order by ID asc" ;//WHERE requestnumber ='$requestnumber'";// sql for server
+                 $stmt = sqlsrv_query( $conn, $sql );
+                //  if($row_count = sqlsrv_has_rows( $stmt )>0){
+                    while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
+                        $test = $test+1;?>
+                           test ="<?php echo $row['userid'];?>";
+                           if (qwe == test){
+                                status = 1;
+                           }
+                        <?php } ?>
+                        if(status ==1){
+                        x.style.display = "block";
+                        return false;
+                        
+                            // finalstatus = "correct";
+                       }else{
+                        x.style.display = "none";
+                        // finalstatus = "incorrect";
+                       }
+                // document.getElementById("assocnum").value = finalstatus;
+                // window.location.assign("test.php");
+            }
     </script>
      
     

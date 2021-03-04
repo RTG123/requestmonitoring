@@ -24,7 +24,7 @@ session_start();
                     while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ) {
                     $_SESSION['userid']=$row['userid'];
                     $_SESSION['usertype']=$row['usertype'];
-                    $_SESSION['username']=$row['username'];
+                    // $_SESSION['username']=$row['username'];
                     // echo "<br/> ID : ". $_SESSION['ID']."<br/> USERID : ". $_SESSION['userid']."<br/> FIRST NAME :". $_SESSION['firstname']."";
                     $_SESSION['firstname']=$row['firstname'];
                     $_SESSION['middlename']=$row['middlename'];

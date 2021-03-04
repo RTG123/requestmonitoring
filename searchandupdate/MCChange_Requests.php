@@ -34,7 +34,7 @@ require_once('../FOLDERS/SES/SESUSER.php'); // CONNECTION
 
     </head>
 
-    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['status'];?>">
+    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['confirmation'];?>">
      <!-- ⭐⭐⭐ HEADER & SIDE BAR ⭐⭐⭐ -->
         <!-- Preloader -->
         <div class="preloader">
@@ -75,7 +75,7 @@ require_once('../FOLDERS/SES/SESUSER.php'); // CONNECTION
                                                 <div class="u-text">
                                                     <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
                                                     <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
-                                                    <a href="#" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
+                                                    <a href="myprofile.php" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,7 +161,7 @@ require_once('../FOLDERS/SES/SESUSER.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">VIEW REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">VIEW REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -302,7 +302,7 @@ require_once('../FOLDERS/SES/SESUSER.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">EDIT REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">EDIT REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -600,6 +600,19 @@ require_once('../FOLDERS/SES/SESUSER.php'); // CONNECTION
         <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 
     <script>
+     function success(){
+            $.toast({
+            heading: 'Successfully Updated',
+            text: "The data has been succesfully updated",
+            position: 'top-right',
+            loaderBg: '#247f34',
+            icon: 'success',
+            hideAfter: 4000,
+            bgColor:'#2b993e',
+            stack: false
+            });
+            <?php $_SESSION['confirmation'] = '';?>
+        }
     $(document).ready(function() {
         $('#myTable').DataTable();
         $('#myTable2').DataTable();

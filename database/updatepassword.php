@@ -72,8 +72,10 @@
         WHERE requestnumber = '$requestnumber' ";
         $stmt = sqlsrv_query( $conn, $sql);
         if($_SESSION['usertype']=='admin'){
+          $_SESSION['confirmation'] = 'success()';
           header("location:../searchandupdate/adminMCPassword_Requests.php");
         }else{
+          $_SESSION['confirmation'] = 'success()';
           header("location:../searchandupdate/MCPassword_Requests.php");
         }
         if ( $stmt ){    

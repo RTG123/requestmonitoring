@@ -231,7 +231,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an QAD request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);
@@ -251,7 +251,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an LASYS request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);
@@ -271,7 +271,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an NON-LASYS request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);
@@ -291,7 +291,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an PAD request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);
@@ -311,7 +311,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an MC NEW USER request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);
@@ -331,7 +331,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an MC Password Request request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);
@@ -351,7 +351,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an MC Registration Change request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);
@@ -371,7 +371,7 @@ session_start();
                 $activitydate = date("m/d/Y");  
                 $activitytime = date("H:i:s");
                 $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has attempted to delete an MC Request Record request with reference number ".$requestnumber ;
-                $activitystatus = "success";
+                $activitystatus = "failed";
                 $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                     VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
                 $stmt = sqlsrv_query( $conn, $sql);

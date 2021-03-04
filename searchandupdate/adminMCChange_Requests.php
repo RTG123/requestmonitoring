@@ -69,7 +69,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                                 <div class="u-text">
                                                     <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
                                                     <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
-                                                    <a href="#" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
+                                                    <a href="adminmyprofile.php" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +155,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">VIEW REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">VIEW REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -296,7 +296,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">EDIT REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">EDIT REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -319,7 +319,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                 <div class="form-group"style="padding: 0px 5px;" >
                                             <label class="col-md-12"> Added by: </label>
                                             <div class="col-md-12">
-                                                <input  id="addedby0"  type="text" name="addedby" class="form-control form-control-line" value="<?php echo $row['userid']?>" > 
+                                                <input  id="addedby0"  type="text" name="addedby" class="form-control form-control-line" value="<?php echo $row['userid']?>" readonly> 
                                               </div>
                                             </div> <!-- form group -->
                                 <div class="form-group"style="padding: 0px 5px;" >
@@ -447,7 +447,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">DELETE REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">DELETE REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -638,9 +638,9 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                                     <td>
                                             <div class="row">
                                             <button type="button" class="btn btn-primary btn-xs dt-edit"style="background-color:#008D61;" >
-                                             <a data-toggle="modal" data-target="#exampleModal<?php echo $row['requestnumber']?>" ><span class="glyphicon glyphicon-pencil " style="color:white"aria-hidden="true"></span></a>
+                                             <a data-toggle="modal" data-target="#exampleModal<?php echo $row['requestnumber']?>" title="Edit Request" ><span class="glyphicon glyphicon-pencil " style="color:white"aria-hidden="true"></span></a>
                                             </button>
-                                            <button data-toggle="modal" data-target="#viewreportModal<?php echo $row['requestnumber']?>" class="btn btn-primary btn-xs dt-edit"style="background-color:#008D61;" title="View Report" style="padding:0;margin:0"><span class="glyphicon glyphicon-info-sign " aria-hidden="true"></span></button>
+                                            <button data-toggle="modal" data-target="#viewreportModal<?php echo $row['requestnumber']?>" class="btn btn-primary btn-xs dt-edit"style="background-color:#008D61;" title="View Request" style="padding:0;margin:0"><span class="glyphicon glyphicon-info-sign " aria-hidden="true"></span></button>
  
                                       
                                             <button data-toggle="modal" data-target="#deletereportModal<?php echo $row['requestnumber']?>"  class="btn btn-xs dt-delete" style="background-color:#008D61; color:white" >
@@ -740,6 +740,19 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 
     <script>
+     function success(){
+            $.toast({
+            heading: 'Successfully Updated',
+            text: "The data has been succesfully updated",
+            position: 'top-right',
+            loaderBg: '#247f34',
+            icon: 'success',
+            hideAfter: 4000,
+            bgColor:'#2b993e',
+            stack: false
+            });
+            <?php $_SESSION['confirmation'] = '';?>
+        }
        function incorrect(){
             $.toast({
             heading: 'Unable to Delete',

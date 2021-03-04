@@ -74,11 +74,12 @@
         WHERE requestnumber = '$requestnumber' ";
         $stmt = sqlsrv_query( $conn, $sql);
         if($_SESSION['usertype']=='admin'){
+          $_SESSION['confirmation'] = 'success()';
           header("location:../searchandupdate/adminMCNewUser_Requests.php");
         }else{
+          $_SESSION['confirmation'] = 'success()';
           header("location:../searchandupdate/MCNewUser_Requests.php");
         }
-        header("location:../searchandupdate/MCNewUser_Requests.php");
         if ( $stmt ){    
         $something = "Submission successful.";
 

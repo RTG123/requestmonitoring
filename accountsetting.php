@@ -73,7 +73,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                                 <div class="u-text">
                                                     <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
                                                     <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
-                                                    <a href="#" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
+                                                    <a href="myprofile.php" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,15 +156,15 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                 <div class="user-btm-box">
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-purple"><i class="ti-pencil-alt"></i></p>
-                                        <h5>Added Reuqest FY- <?php echo date('Y');?></h5>
+                                        <h5>Added Request FY- <?php echo date('Y');?></h5>
                                         <h1><?php echo $_SESSION["total"];?></h1> </div>
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-blue"><i class="ti-write"></i></p>
-                                        <h5>Pending Reuqest FY- <?php echo date('Y');?></h5>
+                                        <h5>Pending Request FY- <?php echo date('Y');?></h5>
                                         <h1><?php echo $_SESSION["pending"];?></h1> </div>
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-danger"><i class="ti-files"></i></p>
-                                        <h5>&nbsp;&nbsp; This &ensp;&ensp;Month's Reuqest</h5>
+                                        <h5>&nbsp;&nbsp; This &ensp;&ensp;Month's Request</h5>
                                         <h1><?php echo $_SESSION["month1"]+$_SESSION["month2"];?></h1> </div>
                                 </div>
                             </div>
@@ -198,9 +198,9 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                                 <br>
                                                 <p class="text-muted"><?php echo $_SESSION['usertype']?></p>
                                             </div>
-                                            <div class="col-md-3 col-xs-6"> <strong>Username</strong>
+                                            <div class="col-md-3 col-xs-6"> <strong>Position</strong>
                                                 <br>
-                                                <p class="text-muted"><?php echo $_SESSION['username']?></p>
+                                                <p class="text-muted"><?php echo $_SESSION['position']?></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -237,7 +237,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                     <div class="tab-pane  active" id="settings">
                                         <form class="form-horizontal form-material" method="POST" action="database/updateprof.php" name="updateForm" onsubmit="return validateForm()" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label class="col-md-12">User Profile</label>
+                                            <label class="col-md-12">User Profile Picture</label>
                                             <div class="col-md-12">
                                                 <input type="file" accept=".png, .jpg, .jpeg"  class="form-control form-control-line" name="user_image"> 
                                             </div>
@@ -264,12 +264,6 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                             <label class="col-sm-12">Section - Department</label>
                                             <div class="col-sm-12">
                                                 <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['section-department'];?>" name="user_team" >
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-12">Username</label>
-                                            <div class="col-md-12">
-                                                <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['username'];?>" name="user_name" > 
                                             </div>
                                         </div>
                                         <div  style= " border: 1px solid green; padding: 10px; margin-bottom:10px;">
@@ -331,7 +325,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                     </div>
                 </div>
                 <!-- /.container-fluid -->
-                <footer class="footer text-center" style="color:#008d61;">Copyright &copy; Year System Name. All Rights Reserved</footer>
+                <footer class="footer text-center" style="color:#008d61;">Copyright &copy; <?php echo date("Y"); ?> Request Monitoring System. All Rights Reserved</footer>
             </div>
             <!-- End Page Content -->
         </div>

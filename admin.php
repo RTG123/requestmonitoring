@@ -306,7 +306,7 @@
                     $act_date = date("m/d/Y");
 
                     $firstweekday = date("M/d", strtotime("-$forfirst days"));
-                    $lastweekday = date("d/Y", strtotime("+$forlast days"));
+                    $lastweekday = date("M/d/Y", strtotime("+$forlast days"));
                     $firstweekday1 = date("m/d/Y", strtotime("-$forfirst days"));
                     $lastweekday1 = date("m/d/Y", strtotime("+$forlast days"));
                     $monday = date("m/d/Y", strtotime("$mond days"));
@@ -368,7 +368,7 @@
                         $totality = $totality + $row123['total'];
                                
                     ?>
-                        <h3 class="box-title m-b-0" style="text-align:center">WEEKLY resquests FROM    </h3>
+                        <h3 class="box-title m-b-0" style="text-align:center">WEEKLY requests FROM    </h3>
                         <h3 class="box-title m-b-0" style="text-align:center"><?php echo $firstweekday."  -  ".$lastweekday?> </h3>
                         <h1 class="m-b-30 m-t-0 font-medium" style="text-align:center"><?php echo $totality?></h1>
                         <!-- <div class="m-t-20 m-b-20  p-t-10"></div> -->

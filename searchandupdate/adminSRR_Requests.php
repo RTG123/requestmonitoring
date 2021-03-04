@@ -71,7 +71,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                                 <div class="u-text">
                                                     <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
                                                     <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
-                                                    <a href="#" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
+                                                    <a href="adminmyprofile.php" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +158,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">VIEW REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">VIEW REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -377,7 +377,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">EDIT REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">EDIT REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -400,7 +400,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                 <div class="form-group"style="padding: 0px 5px;" >
                                             <label class="col-md-12"> Added by: </label>
                                             <div class="col-md-12">
-                                                <input  id="addedby0"  type="text" name="addedby" class="form-control form-control-line" value="<?php echo $row['userid']?>"> 
+                                                <input  id="addedby0"  type="text" name="addedby" class="form-control form-control-line" value="<?php echo $row['userid']?>" readonly> 
                                               </div>
                                             </div> <!-- form group -->
                                 <div class="form-group"style="padding: 0px 5px;" >
@@ -576,7 +576,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="background-color:#008d61">
-                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">DELETE REPORT</h4></div>
+                    <div class="col-sm-11"><h4 class="modal-title" style="font-family:Century Gothic;font-weight:bold;background-color:#008d61">DELETE REQUEST</h4></div>
                     <div class="col-sm-1">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -804,16 +804,13 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
          <div class="col-sm-12">
               <div  style="padding-bottom:15px;background-color:white; padding:20px;">
                             <h3 class="box-title m-b-0" style="padding-bottom:20px;">System Revision Request </h3>
-                        
-                            
                       <div style="margin-left:25%;margin-right:25%;margin-bottom:30px;">
                     <!--selector -->
                     <label >Please select the applicable form: </label>  
                   <div class="inputfield">
                     <select class="form-control " name="selector" 
                       style="input:focus; border: 1px solid#008D61;" id="sel1" onchange="select()" required>
-                      <option value="" ></option>
-                      
+                      <option value="default"></option>
                       <option value="QAD">QAD REQUEST</option>
                       <option value="LAS">LASYS REQUEST</option>
                       <option value="NON">NON-LASYS REQUEST </option>
@@ -822,8 +819,60 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
                         </select>
                         </div>
                       </div> <!-- MARGIN-left -->
+                      <!--default MYTABLE-->
+                      <div class="table-responsive" style="display:;" id="defaulttab">
+                              <table id="defaultmyTable" class="table table-striped" style="overflow: hidden !important; margin-right:500px !important;" >                                   
+                                <thead>
+                                        <tr>
+                                        <th style="text-align:center;">ID</th>
+                                            <th style="text-align:center;">Request Number</th>
+                                            <th style="text-align:center;">Requestor</th>
+                                            <th style="text-align:center;">Nature of Request</th>
+                                            <th style="text-align:center;">Attachment</th>
+                                            <th style="text-align:center;">Actions</th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody style="text-align:center;">
+                                    
+                                        <?php  
+                                              $count=0;
+                                              $sql = "SELECT * FROM requestmonitoring.dbo.qadlog UNION
+                                              SELECT * FROM requestmonitoring.dbo.lasyslog UNION
+                                              SELECT * FROM requestmonitoring.dbo.nonlasyslog UNION
+                                              SELECT * FROM requestmonitoring.dbo.padlog ORDER BY requestnumber DESC ;
+                                              ";// sql for server; // sql for server
+                                              $stmt = sqlsrv_query( $conn, $sql ); 
+                                              while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ){
+                                                $count++;?>
+                                                    <tr>
+                                                    <td style="text-align:center;"><?php echo $count;?></td>
+                                                    <td><?php echo $row['requestnumber'];?></td>
+                                                    <td><?php echo $row['requestor']; ?></td>
+                                                    <td><?php echo $row['natureofrequest']; ?></td>
+                                                    <td><?php echo $row['attachment']; ?></td>
+                                                    <td>
+                                            <div class="row">
+                                           
+                  <button type="button" class="btn btn-primary btn-xs dt-edit"style="background-color:#008D61;" >
+                    <a data-toggle="modal" style="color:white;" data-target="#exampleModal<?php echo $row['requestnumber']?>" ><span class="glyphicon glyphicon-pencil " aria-hidden="true"></span></a>
+                      </button>
+                      <button data-toggle="modal" data-target="#viewreportModal<?php echo $row['requestnumber']?>" class="btn btn-primary btn-xs dt-edit"style="background-color:#008D61;" title="View Report" style="padding:0;margin:0"><span class="glyphicon glyphicon-info-sign " aria-hidden="true"></span></button>
+ 
+                      <button data-toggle="modal" data-target="#deletereportModal<?php echo $row['requestnumber']?>" class="btn btn-primary btn-xs dt-edit"style="background-color:#008D61;" title="View Report" style="padding:0;margin:0">
+                                              <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </button>
+                                            </div>
+                                          </td>
+                                                    </tr>
+                                                    <?php } ?>
+                                  </tbody>
+                                   
+                                        
+                                </table>
+                              </div>
+                          <!--default MYTABLE-->
                       <!--MYTABLE-->
-                      <div class="table-responsive" style="display:;"id="tab">
+                      <div class="table-responsive" style="display:none;"id="tab">
                               <table id="myTable" class="table table-striped" style="overflow: hidden !important; margin-right:500px !important;" >                                   
                                 <thead>
                                         <tr>
@@ -1137,40 +1186,55 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
             });
             <?php $_SESSION['confirmation'] = '';?>
         }
+        function invalid(){
+            $.toast({
+            heading: 'Failed to update:',
+            text: "Please fill the appropriate dates",
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });
+            <?php $_SESSION['confirmation'] = '';?>
+        }
   function select(){
     var x = document.getElementById("sel1").value;
-    if(x=="QAD"){
-      // document.getElementById("addedby0").style.display="none !important";
-      // document.getElementById("trial").style.display="none !important";
+  if(x == "default"){
+      document.getElementById("defaulttab").style.display="";
+      document.getElementById("tab").style.display="none";
+      document.getElementById("tab2").style.display="none";
+      document.getElementById("tab3").style.display="none";
+      document.getElementById("tab4").style.display="none";
+    }else if(x=="QAD"){
+      document.getElementById("defaulttab").style.display="none";
       document.getElementById("tab").style.display="";
       document.getElementById("tab2").style.display="none";
       document.getElementById("tab3").style.display="none";
       document.getElementById("tab4").style.display="none";
     }else if(x=="LAS"){//for lasys
+      document.getElementById("defaulttab").style.display="none";
       document.getElementById("tab").style.display="none";
       document.getElementById("tab2").style.display="";
       document.getElementById("tab3").style.display="none";
       document.getElementById("tab4").style.display="none";
     }else if(x=="NON"){//for non lasys
-      
+      document.getElementById("defaulttab").style.display="none";
       document.getElementById("tab").style.display="none";
       document.getElementById("tab2").style.display="none";
       document.getElementById("tab3").style.display="";
       document.getElementById("tab4").style.display="none";
-      
     }else if(x=="PAD"){
+      document.getElementById("defaulttab").style.display="none";
       document.getElementById("tab").style.display="none";
       document.getElementById("tab2").style.display="none";
       document.getElementById("tab3").style.display="none";
       document.getElementById("tab4").style.display="";
-    }else {
-      document.getElementById("tab").style.display="none";
-      document.getElementById("tab2").style.display="none";
-      document.getElementById("tab3").style.display="none";
-      document.getElementById("tab4").style.display="none";
     }
   }
     $(document).ready(function() {
+        $('#defaultmyTable').DataTable();
         $('#myTable').DataTable();
         $('#myTable2').DataTable();
         $('#myTable3').DataTable();
@@ -1219,10 +1283,10 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         ]
     });
 
-    
+    // For daterequested and datereceived
     $(document).ready(function(){
       var fordatereq=0;
-    var fordaterec=0;
+      var fordaterec=0;
       $('input[name="daterequested"]').datepicker({
         format: 'yyyy/mm/dd',
         container: container,
@@ -1231,7 +1295,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         endDate:"0m",
       }).on("changeDate", function (e) {
         fordatereq=this.value;
-        if(fordatereq>fordaterec){
+         if(fordatereq>fordaterec){
           document.getElementById("inputdate10").value=""; 
           document.getElementById("inputdate20").value=""; 
           fordatereq=0;
@@ -1260,20 +1324,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
             endDate:"0m",
 		}).on("changeDate", function (e) {
          fordaterec = this.value;
-        if(fordatereq==0){
-          document.getElementById("inputdate10").value=""; 
-          document.getElementById("inputdate20").value=""; 
-          $.toast({
-            heading: 'ERROR',
-            text: 'Please fill in the date requested first',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
-            });
-        }else if(fordatereq>fordaterec){     
+        if(fordatereq>fordaterec){     
           document.getElementById("inputdate20").value="";  
           $.toast({
             heading: 'ERROR',
@@ -1287,10 +1338,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
             });   
           }
         });
-    });
-    //<!--⭐⭐⭐DATE APPROVED AND DATE DONE⭐⭐⭐-->
-    $(document).ready(function(){
-      var minDate = new Date();
+        var minDate = new Date();
       var datestor=0;
       var datestor1 = 0;
       var date_input=$('input[name="dateapproved"]'); //our date input has the name "inputdatereg"
@@ -1306,7 +1354,35 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         // endDate:"0m",
       }).on("changeDate", function (e) {
         datestor=this.value;
-        if(datestor>datestor1){
+        if(fordatereq>datestor){
+          document.getElementById("inputdate3").value=""; 
+         datestor=0; 
+         datestor1=0; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'The date requested must be earlier than the date approved',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });   
+        }else if(fordaterec>datestor){
+          document.getElementById("inputdate3").value=""; 
+         datestor=0; 
+         datestor1=0; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'The date received must be earlier than the date approved',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });   
+        }else if(datestor>datestor1){
           document.getElementById("inputdate3").value=""; 
           document.getElementById("inputdate4").value="";
          datestor=0; 
@@ -1335,20 +1411,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
         // startDate: '-2d'
       }).on("changeDate", function (e) {
          datestor1 = this.value;
-        if(datestor==0){
-          document.getElementById("inputdate3").value=""; 
-          document.getElementById("inputdate4").value=""; 
-          $.toast({
-            heading: 'ERROR',
-            text: 'Please fill in the date approved first',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
-            });
-        }else if(datestor>datestor1){
+       if(datestor>datestor1){
             document.getElementById("inputdate4").value="";
             $.toast({
             heading: 'ERROR',
@@ -1362,8 +1425,7 @@ require_once('../FOLDERS/SES/SESADMIN.php'); // CONNECTION
             });
           }//if
         });
-    })
-    //<!--⭐⭐⭐DATE APPROVED AND DATE DONE⭐⭐⭐-->
+    }); 
     </script>
     
     

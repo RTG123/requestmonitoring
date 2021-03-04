@@ -72,7 +72,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                                 <div class="u-text">
                                                     <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
                                                     <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
-                                                    <a href="#" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
+                                                    <a href="adminmyprofile.php" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -271,7 +271,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                 </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary"style="background:#008D61;">Save changes</button>
+                            <button type="submit" class="btn btn-primary"style="background:#008D61;">Submit</button>
                             </div>
                             </form>
                         </div>
@@ -352,6 +352,39 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                             </div> 
                                         </div>
                         </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-outline" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary"style="background:#008D61;">Submit</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!--  add new nature of request -->
+              <div class="modal fade" id="modaladdnature" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" 
+                aria-hidden="true" >
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header"style="background:#008D61;">
+                      <h5 class="modal-title" id="exampleModalLabel" style="text-align:center; padding-top:10px;">ADD NEW NATURE OF REQUEST</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="database/addnature.php" method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                        <div   id="DEPT"  >
+                                          <label>Nature of Request :</label>
+                                            <div class="input-size">
+                                              <input type="text" id="nature" pattern="[A-Za-z0-9]"  name="nature"
+                                              title="Special Characters are not allowed in this field"
+                                              class="form-control" required >
+                                            </div> 
+                                        </div>
+                        </div>
+                      
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-danger btn-outline" data-dismiss="modal">Close</button>
@@ -444,7 +477,22 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                   <div id="nor" class="margin" >
                     <label>Nature of Request : </label>
                       <div class="inputfield">
-                        <input  type="text " id="inputnor" name="nor"  class="input" >
+                      <select class="form-control " id="inputnor"  name="nor" onchange="nature()"
+                    data-toggle="tooltip"data-delay="{'show:50', 'hide:3000'}" data-placement="left"
+                     title="When you add a new user the page will be refreshed."
+                      style="input:focus; padding: 5px;border: 1px solid#008D61;" id="inputnature" >
+                             <option selected disabled></option>
+                             <?php          
+                    $sql = "SELECT DISTINCT(Natureofrequest) FROM [requestmonitoring].[dbo].[natureofrequest] "; // sql for server
+                    $stmt = sqlsrv_query( $conn, $sql ); 
+                       while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ){?>
+                      <option value="<?php echo $row['Natureofrequest'] ?>"><?php echo $row['Natureofrequest'] ?></option>
+                       <?php    
+                         }
+                    ?>
+                      <option value="NEW">Add Nature of Request</option>
+                        </select>
+                        <!-- <input  type="text " id="inputnor" name="nor"   > -->
                       </div> 
                   </div> 
                     <!-- system username -->
@@ -786,9 +834,10 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
 			autoclose: true,
 		  })
     });
-    $(document).ready(function(){
+     // For daterequested and datereceived
+     $(document).ready(function(){
       var fordatereq=0;
-    var fordaterec=0;
+      var fordaterec=0;
       $('input[name="daterequested"]').datepicker({
         format: 'yyyy/mm/dd',
         container: container,
@@ -797,7 +846,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
         endDate:"0m",
       }).on("changeDate", function (e) {
         fordatereq=this.value;
-        if(fordatereq>fordaterec){
+         if(fordatereq>fordaterec){
           document.getElementById("inputdate10").value=""; 
           document.getElementById("inputdate20").value=""; 
           fordatereq=0;
@@ -853,10 +902,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
             });   
           }
         });
-    });
-    //<!--⭐⭐⭐DATE APPROVED AND DATE DONE⭐⭐⭐-->
-    $(document).ready(function(){
-      var minDate = new Date();
+        var minDate = new Date();
       var datestor=0;
       var datestor1 = 0;
       var date_input=$('input[name="dateapproved"]'); //our date input has the name "inputdatereg"
@@ -872,7 +918,61 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
         // endDate:"0m",
       }).on("changeDate", function (e) {
         datestor=this.value;
-        if(datestor>datestor1){
+        if(fordatereq==0){
+          document.getElementById("inputdate3").value=""; 
+          document.getElementById("inputdate4").value=""; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'Please fill this date requested first',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });
+        }else if(fordaterec==0){
+          document.getElementById("inputdate3").value=""; 
+          document.getElementById("inputdate4").value=""; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'Please fill in the date received first',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });
+        }else if(fordatereq>datestor){
+          document.getElementById("inputdate3").value=""; 
+         datestor=0; 
+         datestor1=0; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'The date requested must be earlier than the date approved',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });   
+        }else if(fordaterec>datestor){
+          document.getElementById("inputdate3").value=""; 
+         datestor=0; 
+         datestor1=0; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'The date received must be earlier than the date approved',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });   
+        }else if(datestor>datestor1){
           document.getElementById("inputdate3").value=""; 
           document.getElementById("inputdate4").value="";
          datestor=0; 
@@ -900,7 +1000,33 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
         // startDate: '-2d'
       }).on("changeDate", function (e) {
          datestor1 = this.value;
-        if(datestor==0){
+        if(fordatereq==0){
+          document.getElementById("inputdate3").value=""; 
+          document.getElementById("inputdate4").value=""; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'Please fill this date requested first',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });
+        }else if(fordaterec==0){
+          document.getElementById("inputdate3").value=""; 
+          document.getElementById("inputdate4").value=""; 
+          $.toast({
+            heading: 'ERROR',
+            text: 'Please fill in the date received first',
+            position: 'top-right',
+            loaderBg: '#ff6849',
+            icon: 'warning',
+            hideAfter: 4000,
+            bgColor:'#fc050d',
+            stack: false
+            });
+        }else if(datestor==0){
           document.getElementById("inputdate3").value=""; 
           document.getElementById("inputdate4").value=""; 
           $.toast({
@@ -927,8 +1053,152 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
             });
           }//if
         });
-    })
+    });
     //<!--⭐⭐⭐DATE APPROVED AND DATE DONE⭐⭐⭐-->
+    // // For daterequested and datereceived
+    // $(document).ready(function(){
+    //   var fordatereq=0;
+    // var fordaterec=0;
+    //   $('input[name="daterequested"]').datepicker({
+    //     format: 'yyyy/mm/dd',
+    //     container: container,
+    //     todayHighlight: true,
+    //     autoclose: true,
+    //     endDate:"0m",
+    //   }).on("changeDate", function (e) {
+    //     fordatereq=this.value;
+    //     if(fordatereq>fordaterec){
+    //       document.getElementById("inputdate10").value=""; 
+    //       document.getElementById("inputdate20").value=""; 
+    //       fordatereq=0;
+    //       fordaterec=0; 
+    //       $.toast({
+    //         heading: 'ERROR',
+    //         text: 'The date requested must be earlier than the date received',
+    //         position: 'top-right',
+    //         loaderBg: '#ff6849',
+    //         icon: 'warning',
+    //         hideAfter: 4000,
+    //         bgColor:'#fc050d',
+    //         stack: false
+    //         });   
+    //     }
+    //   });
+    
+		// var date_input=$('input[name="datereceived"]'); //our date input has the name "inputdatereg"
+		// var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+		// date_input.datepicker({
+    //         format: 'yyyy/mm/dd',
+    //         showAnim:'slideDown',
+		// 	container: container,
+		// 	todayHighlight: true,
+    //         autoclose: true,
+    //         endDate:"0m",
+		// }).on("changeDate", function (e) {
+    //      fordaterec = this.value;
+    //     if(fordatereq==0){
+    //       document.getElementById("inputdate10").value=""; 
+    //       document.getElementById("inputdate20").value=""; 
+    //       $.toast({
+    //         heading: 'ERROR',
+    //         text: 'Please fill in the date requested first',
+    //         position: 'top-right',
+    //         loaderBg: '#ff6849',
+    //         icon: 'warning',
+    //         hideAfter: 4000,
+    //         bgColor:'#fc050d',
+    //         stack: false
+    //         });
+    //     }else if(fordatereq>fordaterec){     
+    //       document.getElementById("inputdate20").value="";  
+    //       $.toast({
+    //         heading: 'ERROR',
+    //         text: 'The date requested must be earlier than the date received',
+    //         position: 'top-right',
+    //         loaderBg: '#ff6849',
+    //         icon: 'warning',
+    //         hideAfter: 4000,
+    //         bgColor:'#fc050d',
+    //         stack: false
+    //         });   
+    //       }
+    //     });
+    // });
+    // //<!--⭐⭐⭐DATE APPROVED AND DATE DONE⭐⭐⭐-->
+    // $(document).ready(function(){
+    //   var minDate = new Date();
+    //   var datestor=0;
+    //   var datestor1 = 0;
+    //   var date_input=$('input[name="dateapproved"]'); //our date input has the name "inputdatereg"
+	  // var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
+    //   date_input.datepicker({
+    //     format: 'yyyy/mm/dd',
+    //     showAnim:'slideDown',
+    //     numberOfMonth: 1,
+    //     todayHighlight: true,
+    //     minDate: minDate,
+    //     autoclose: true,
+    //     endDate:"0d",
+    //     // endDate:"0m",
+    //   }).on("changeDate", function (e) {
+    //     datestor=this.value;
+    //     if(datestor>datestor1){
+    //       document.getElementById("inputdate3").value=""; 
+    //       document.getElementById("inputdate4").value="";
+    //      datestor=0; 
+    //      datestor1=0; 
+    //       $.toast({
+    //         heading: 'ERROR',
+    //         text: 'The date approved must be earlier than the date done',
+    //         position: 'top-right',
+    //         loaderBg: '#ff6849',
+    //         icon: 'warning',
+    //         hideAfter: 4000,
+    //         bgColor:'#fc050d',
+    //         stack: false
+    //         });   
+    //     }
+    //   });
+
+    //   $('#inputdate4').datepicker({
+    //     format: 'yyyy/mm/dd',
+    //     container: container,
+    //     todayHighlight: true,
+    //     autoclose: true,
+    //     endDate:"0d",
+    //     minDate: $('#inputdate3'),
+    //     // startDate: '-2d'
+    //   }).on("changeDate", function (e) {
+    //      datestor1 = this.value;
+    //     if(datestor==0){
+    //       document.getElementById("inputdate3").value=""; 
+    //       document.getElementById("inputdate4").value=""; 
+    //       $.toast({
+    //         heading: 'ERROR',
+    //         text: 'Please fill in the date approved first',
+    //         position: 'top-right',
+    //         loaderBg: '#ff6849',
+    //         icon: 'warning',
+    //         hideAfter: 4000,
+    //         bgColor:'#fc050d',
+    //         stack: false
+    //         });
+    //     }else if(datestor>datestor1){
+    //         document.getElementById("inputdate4").value="";
+    //         $.toast({
+    //         heading: 'ERROR',
+    //         text: 'The date approved must be earlier than the date done',
+    //         position: 'top-right',
+    //         loaderBg: '#ff6849',
+    //         icon: 'warning',
+    //         hideAfter: 4000,
+    //         bgColor:'#fc050d',
+    //         stack: false
+    //         });
+    //       }//if
+    //     });
+    // })
+    // //<!--⭐⭐⭐DATE APPROVED AND DATE DONE⭐⭐⭐-->
     $(document).ready(function(){
       var date_input=$('input[name="infocard"]'); //our date input has the name "date"
       var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
@@ -987,7 +1257,12 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
             if(dept=="NEW"){
             $('#modaladddept').modal('show');
             }
-        
+        }
+        function nature(){  
+            var dept = document.getElementById("inputnor").value;
+            if(dept=="NEW"){
+            $('#modaladdnature').modal('show');
+            }
         }
         function select(){
             var x = document.getElementById("sel1").value;

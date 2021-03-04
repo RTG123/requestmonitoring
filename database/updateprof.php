@@ -61,7 +61,7 @@ $confirmpassword        = $_POST['confirmpass_word'];
               $activitydate = date("m/d/Y");  
               $activitytime = date("H:i:s");
               $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "success";
+              $activitystatus = "failed";
               $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                   VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
               $stmt = sqlsrv_query( $conn, $sql);
@@ -79,7 +79,7 @@ $confirmpassword        = $_POST['confirmpass_word'];
               $activitydate = date("m/d/Y");  
               $activitytime = date("H:i:s");
               $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "success";
+              $activitystatus = "failed";
               $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                   VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
               $stmt = sqlsrv_query( $conn, $sql);
@@ -98,7 +98,7 @@ $confirmpassword        = $_POST['confirmpass_word'];
               $activitydate = date("m/d/Y");  
               $activitytime = date("H:i:s");
               $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "success";
+              $activitystatus = "failed";
               $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                   VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
               $stmt = sqlsrv_query( $conn, $sql);
@@ -146,7 +146,7 @@ $confirmpassword        = $_POST['confirmpass_word'];
               $activitydate = date("m/d/Y");  
               $activitytime = date("H:i:s");
               $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "success";
+              $activitystatus = "failed";
               $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
                   VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
               $stmt = sqlsrv_query( $conn, $sql);
@@ -165,7 +165,7 @@ $confirmpassword        = $_POST['confirmpass_word'];
           $activitydate = date("m/d/Y");  
           $activitytime = date("H:i:s");
           $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-          $activitystatus = "success";
+          $activitystatus = "failed";
           $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
               VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
           $stmt = sqlsrv_query( $conn, $sql);
