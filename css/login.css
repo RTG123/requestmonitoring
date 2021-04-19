@@ -37,10 +37,10 @@ body{
     top:25px;
   
 }
-#hide1{
+#reveal{
     display: none;
 }
-#hide2{
+#hide{
     color:grey;
 }
 

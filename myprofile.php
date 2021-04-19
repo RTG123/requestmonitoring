@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <?php
+    // Name of the module : myprofile.php
+    // Module creation date : 00/00/21
+    // Author of the Module : Engr. Rian Canua
+    // Revision History : Rev 0  == DONE
+    // Description : This module handles the user profile
+    // Done aligning in module to PHQD020
 require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION 
-  require_once('referencesession.php'); // ALL THE DATA
-    if ($_SESSION['usertype']=='admin'){
-     header("Location:admin.php");
-   }else if(empty($_SESSION['usertype'])){
-     header("Location:login.php");
-   }
-
+require_once('referencesession.php'); // ALL THE DATA
   ?>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Request Monitoring System</title>
-        <link rel="icon" type="image/png" href="images/favicon.ico" />
+        <title>Request Monitoring System</title><!-- Header of the module -->
+        <link rel="icon" type="image/png" href="images/favicon.ico" /><!-- Icon of the module -->
 
         <link rel="stylesheet" type="text/css" href="icons/themify-icons/themify-icons.css"><!-- Themify Icons CSS -->
         <link rel="stylesheet" type="text/css" href="icons/font-awesome/css/font-awesome.min.css"><!-- Font-awesome Icons CSS -->
@@ -31,9 +30,8 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
         <link href="css/formstyle.css" rel="stylesheet">
         <link href="../plugins/bower_components/morrisjs/morris.css" rel="stylesheet">
     </head>
-
-    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['status'];?>">
-     <!-- ⭐⭐⭐ HEADER & SIDE BAR ⭐⭐⭐ -->
+    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['Status'];?>">
+     <!-- ⭐⭐⭐ Header and Side Bar ⭐⭐⭐ -->
         <!-- Preloader -->
         <div class="preloader">
             <svg class="circular" viewBox="25 25 50 50">
@@ -61,18 +59,18 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                     <!-- Dropdown User -->
                     <ul class="nav navbar-top-links navbar-right pull-right">
                         <li class="dropdown">
-                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="images/<?php echo $_SESSION['profpic']?>" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?php echo $_SESSION['firstname']?></b><span class="caret"></span> </a>
+                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="images/<?php echo $_SESSION['Profile_pic']?>" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?php echo $_SESSION['First_name']?></b><span class="caret"></span> </a>
                             <ul class="dropdown-menu dropdown-user animated flipInY">
                                 <li>
                                     <div class="dw-user-box">
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <div class="u-img"><img src="images/<?php echo $_SESSION['profpic']?>"  alt="user" /></div>
+                                                <div class="u-img"><img src="images/<?php echo $_SESSION['Profile_pic']?>"  alt="user" /></div>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="u-text">
-                                                    <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
-                                                    <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
+                                                    <p style="font-size:14px"><?php echo $_SESSION['First_name']." ".$_SESSION['Last_name'];?></p>
+                                                    <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['User_type']?></small></p>
                                                     <a href="adminmyprofile.php" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
@@ -101,8 +99,8 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                     <div class="row"><br></div>
                     <div class="user-profile">
                         <div class="dropdown user-pro-body">
-                            <div><a href="myprofile.php"><img src="images/<?php echo $_SESSION['profpic']?>"  alt="user-img" class="img-circle"></a></div>
-                            <h5 style="font-family:Century Gothic"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?><br><small style="text-transform: uppercase;" ><?php echo $_SESSION['usertype']?></small</h5>
+                            <div><a href="myprofile.php"><img src="images/<?php echo $_SESSION['Profile_pic']?>"  alt="user-img" class="img-circle"></a></div>
+                            <h5 style="font-family:Century Gothic"><?php echo $_SESSION['First_name']." ".$_SESSION['Last_name'];?><br><small style="text-transform: uppercase;" ><?php echo $_SESSION['User_type']?></small</h5>
                         </div>
                     </div>
                     <ul class="nav" id="side-menu">
@@ -124,7 +122,7 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                 </div>
             </div>
                 <!-- End Left Side Navigation -->
-            <!-- ⭐⭐⭐ END HEADER & SIDE BAR ⭐⭐⭐ -->
+            <!-- ⭐⭐⭐ End Header and Side Bar ⭐⭐⭐ -->
             
             <!-- ⭐⭐⭐ Page Content ⭐⭐⭐ -->
              <!-- Page Content -->
@@ -132,42 +130,48 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                 <div class="container-fluid">
                     <div class="row bg-title">
                         <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-                            <h4 class="page-title">My Profile</h4> </div>
+                            <h4 class="page-title">My Profile</h4> 
+                        </div>
                         <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
                             <ol class="breadcrumb">
                                 <li><a href="index.php">Home</a></li>
                                 <li class="active">My Profile</li>
                             </ol>
                         </div>
-                        <!-- /.col-lg-12 -->
                     </div>
                     <div class="row">
+                            <!--  User Profile Picture with different request  -->
                         <div class="col-md-4 col-xs-12">
                             <div class="white-box">
                                 <div class="user-bg">
                                     <div class="overlay-box">
                                         <div class="user-content">
-                                            <a href="javascript:void(0)"><img src="images/<?php echo $_SESSION['profpic']?>"  class="thumb-lg img-circle" alt="img"></a>
-                                            <h4 class="text-white"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></h4>
-                                            <h5 class="text-white"><?php echo $_SESSION['usertype'];?></h5> </div>
+                                            <a href="javascript:void(0)"><img src="images/<?php echo $_SESSION['Profile_pic']?>"  class="thumb-lg img-circle" alt="img"></a>
+                                            <h4 class="text-white"><?php echo $_SESSION['First_name']." ".$_SESSION['Last_name'];?></h4>
+                                            <h5 class="text-white"><?php echo $_SESSION['User_type'];?></h5> 
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="user-btm-box">
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-purple"><i class="ti-pencil-alt"></i></p>
                                         <h5>Added Request FY- <?php echo date('Y');?></h5>
-                                        <h1><?php echo $_SESSION["total"];?></h1> </div>
+                                        <h1><?php echo $_SESSION["total"];?></h1> 
+                                    </div>
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-blue"><i class="ti-write"></i></p>
                                         <h5>Pending Request FY- <?php echo date('Y');?></h5>
-                                        <h1><?php echo $_SESSION["pending"];?></h1> </div>
+                                        <h1><?php echo $_SESSION["pending"];?></h1>
+                                    </div>
                                     <div class="col-md-4 col-sm-4 text-center">
                                         <p class="text-danger"><i class="ti-files"></i></p>
                                         <h5>This Month's Request</h5>
-                                        <h1><?php echo $_SESSION["month1"]+$_SESSION["month2"];?></h1> </div>
+                                        <h1><?php echo $_SESSION["month1"]+$_SESSION["month2"];?></h1>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <!-- Different Tabs for navigation -->
                         <div class="col-md-8 col-xs-12">
                             <div class="white-box">
                                 <ul class="nav nav-tabs tabs customtab">
@@ -181,24 +185,25 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                         <a href="#settings" data-toggle="tab" aria-expanded="false"> <span class="visible-xs"><i class="fa fa-cog"></i></span> <span class="hidden-xs">Settings</span> </a>
                                     </li>
                                 </ul>
+                                <!-- Profile Tab -->
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="profile">
                                         <div class="row">
                                             <div class="col-md-3 col-xs-6 b-r"> <strong>Full Name</strong>
                                                 <br>
-                                                <p class="text-muted"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
+                                                <p class="text-muted"><?php echo $_SESSION['First_name']." ".$_SESSION['Last_name'];?></p>
                                             </div>
                                             <div class="col-md-3 col-xs-6 b-r"> <strong>Associate No.</strong>
                                                 <br>
-                                                <p class="text-muted"><?php echo $_SESSION['userid'];?></p>
+                                                <p class="text-muted"><?php echo $_SESSION['User_id'];?></p>
                                             </div>
                                             <div class="col-md-3 col-xs-6 b-r"> <strong>User Type</strong>
                                                 <br>
-                                                <p class="text-muted"><?php echo $_SESSION['usertype'];?></p>
+                                                <p class="text-muted"><?php echo $_SESSION['User_type'];?></p>
                                             </div>
                                             <div class="col-md-3 col-xs-6"> <strong>Position</strong>
                                                 <br>
-                                                <p class="text-muted"><?php echo $_SESSION['position'];?></p>
+                                                <p class="text-muted"><?php echo $_SESSION['Position'];?></p>
                                             </div>
                                         </div>
                                         <hr>
@@ -209,31 +214,33 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                         <p>The rules regarding conduct that associates must follow in order to
                                             behave appropriately and with the highest ethics.</p>
                                     </div>
+                                    <!-- Activity Tab -->
                                     <div class="tab-pane" id="home">
                                         <div class="steamline">
                                             <?php  
                                               $dte = date("m")."%".date("Y");
-                                              $userid = $_SESSION['userid'];
+                                              $userid = $_SESSION['User_id'];
                                                                               
                                               $sql = "SELECT TOP 5* FROM [requestmonitoring].[dbo].[activitylogs] WHERE userid = '$userid' and
                                               activitydate like '$dte' order by activitydate desc, activitytime desc,ID desc"; // sql for server
                                               $stmt = sqlsrv_query( $conn, $sql ); 
-                                              while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ){
+                                              while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) )
+                                              {
                                                   ?>
-                                                     <div class="sl-item">
-                                              <div class="sl-left"> <img src="images/user-default.png" alt="user" class="img-circle" /> 
-                                              </div>
+                                            <div class="sl-item">
+                                              <div class="sl-left"> <img src="images/user-default.png" alt="user" class="img-circle" />  </div>
                                                 <div class="sl-right">
                                                     <div class="m-l-40"><a href="#" class="text-info"><?php echo $row['firstname']." ".$row['lastname'] ; ?></a> <span class="sl-date"><?php echo $row['activitydate'] ." ". $row['activitytime'] ?></span>
                                                         <p class="m-t-10"><?php echo $row['activitydetails']; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
-                                                    <?php } ?>
+                                            <?php } ?>
                                         </div>
                                     </div>
+                                    <!-- Settings Tab -->
                                     <div class="tab-pane" id="settings">
-                                    <form class="form-horizontal form-material" method="POST" action="database/updateprof.php" name="updateForm" onsubmit="return validateForm()" enctype="multipart/form-data">
+                                      <form class="form-horizontal form-material" method="POST" action="database/updateprof.php" name="updateForm" onsubmit="return validateForm()" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <label class="col-md-12">User Profile</label>
                                             <div class="col-md-12">
@@ -243,25 +250,25 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                         <div class="form-group">
                                             <label class="col-md-12">Associate Number</label>
                                             <div class="col-md-12">
-                                                <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['userid'];?>" readonly> 
+                                                <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['User_id'];?>" readonly> 
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-md-12">Full Name</label>
                                             <div class="col-md-4">
-                                                <input type="text" placeholder="First Name" class="form-control form-control-line" value="<?php echo $_SESSION['firstname'];?>" name="first_name"> 
+                                                <input type="text" placeholder="First Name" class="form-control form-control-line" value="<?php echo $_SESSION['First_name'];?>" name="first_name"> 
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" placeholder="Middle Name" class="form-control form-control-line" value="<?php echo $_SESSION['middlename'];?>" name="middle_name"> 
+                                                <input type="text" placeholder="Middle Name" class="form-control form-control-line" value="<?php echo $_SESSION['Middle_name'];?>" name="middle_name"> 
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" placeholder="Last Name" class="form-control form-control-line" value="<?php echo $_SESSION['lastname'];?>" name="last_name"> 
+                                                <input type="text" placeholder="Last Name" class="form-control form-control-line" value="<?php echo $_SESSION['Last_name'];?>" name="last_name"> 
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="col-sm-12">Section - Department</label>
                                             <div class="col-sm-12">
-                                                <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['section-department'];?>" name="user_team" >
+                                                <input type="text" class="form-control form-control-line" value="<?php echo $_SESSION['Section_department'];?>" name="user_team" >
                                             </div>
                                         </div>
                                         <div  style= " border: 1px solid green; padding: 10px; margin-bottom:10px;">
@@ -314,7 +321,6 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
                                                 <button type="submit" style="background-color:#008D61"class="btn btn-success" name="updateprofile2" value="<?php echo $_SESSION['userinfo_id'];?>">Update Profile</button>
                                             </div>
                                          </div>
-                                       
                                     </form>
                                     </div>
                                 </div>
@@ -381,8 +387,10 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
         <script src="plugins/bower_components/waypoints/lib/jquery.waypoints.js"></script>
         <script src="plugins/bower_components/counterup/jquery.counterup.min.js"></script>
         <script>
-        function success(){
-            $.toast({
+        function success()
+        {
+            $.toast(
+            {
             heading: 'Successfully Added',
             text: 'You have successfully updated your account',
             position: 'top-right',
@@ -392,59 +400,67 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
             bgColor:'#2b993e',
             stack: false
             });
-            <?php $_SESSION['status'] = '';?>
+            <?php $_SESSION['Status'] = '';?>
         }
-        function invalid(){
-            $.toast({
-            heading: 'ERROR',
-            text: 'Failed to update your account',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
+        function invalid()
+        {
+            $.toast(
+            {
+                heading: 'ERROR',
+                text: 'Failed to update your account',
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'warning',
+                hideAfter: 4000,
+                bgColor:'#fc050d',
+                stack: false
             });
-            <?php $_SESSION['status'] = '';?>
+            <?php $_SESSION['Status'] = '';?>
         }
         </script>
         <script>
-        function unsee(){
+        function unsee()
+        {
             var x= document.getElementById("password-field");
             var y= document.getElementById("hide1");
             var z= document.getElementById("hide2");
-
-            if(x.type === "password"){
+            if(x.type === "password")
+            {
                 x.type = "text";
                 y.style.display = "block";
                 z.style.display = "none"
             console.log("successfull")
-            }else{
+            }else
+            {
                 x.type = "password";
                 y.style.display = "none";
                 z.style.display = "block"
             console.log("unsuccess")
             }
         }
-        function unsee1(){
+        function unsee1()
+        {
             var x= document.getElementById("password-field1");
             var y= document.getElementById("hide3");
             var z= document.getElementById("hide4");
-
-            if(x.type === "password"){
+            if(x.type === "password")
+            {
                 x.type = "text";
                 y.style.display = "block";
                 z.style.display = "none"
             console.log("successfull")
-            }else{
+            }else
+            {
                 x.type = "password";
                 y.style.display = "none";
                 z.style.display = "block"
             console.log("unsuccess")
             }
         }
-        function invaliddata1(){
-            $.toast({
+        function invaliddata1()
+        {
+            $.toast(
+            {
             heading: 'Unable to Update',
             text: 'Please fiil up the current password first.',
             position: 'top-right',
@@ -454,93 +470,107 @@ require_once('FOLDERS/SES/SESUSER.php'); // CONNECTION
             bgColor:'#fc050d',
             stack: false
             });
-            <?php $_SESSION['status'] = '';?>
+            <?php $_SESSION['Status'] = '';?>
         }
-        function invaliddata2(){
-            $.toast({
-            heading: 'Unable to Update',
-            text: 'Incorrect current password.',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
+        function invaliddata2()
+        {
+            $.toast(
+            {
+                heading: 'Unable to Update',
+                text: 'Incorrect current password.',
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'warning',
+                hideAfter: 4000,
+                bgColor:'#fc050d',
+                stack: false
             });
-            <?php $_SESSION['status'] = '';?>
+            <?php $_SESSION['Status'] = '';?>
         }
-        function invaliddata3(){
-            $.toast({
-            heading: 'Unable to Update',
-            text: "Can't update when new password is empty.",
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
+        function invaliddata3()
+        {
+            $.toast(
+            {
+                heading: 'Unable to Update',
+                text: "Can't update when new password is empty.",
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'warning',
+                hideAfter: 4000,
+                bgColor:'#fc050d',
+                stack: false
             });
-            <?php $_SESSION['status'] = '';?>
+            <?php $_SESSION['Status'] = '';?>
         }
-        function invaliddata4(){
-            $.toast({
-            heading: 'Unable to Update',
-            text: 'The New Password & Confirmpassword does not match.',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
+        function invaliddata4()
+        {
+            $.toast(
+            {
+                heading: 'Unable to Update',
+                text: 'The New Password & Confirmpassword does not match.',
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'warning',
+                hideAfter: 4000,
+                bgColor:'#fc050d',
+                stack: false
             });
-            <?php $_SESSION['status'] = '';?>
+            <?php $_SESSION['Status'] = '';?>
         }
-        function unsee2(){
+        function unsee2()
+        {
             var x= document.getElementById("password-field2");
             var y= document.getElementById("hide5");
             var z= document.getElementById("hide6");
-
-            if(x.type === "password"){
+            if(x.type === "password")
+            {
                 x.type = "text";
                 y.style.display = "block";
                 z.style.display = "none"
-            console.log("successfull")
-            }else{
+                console.log("successfull")
+            }else
+            {
                 x.type = "password";
                 y.style.display = "none";
                 z.style.display = "block"
-            console.log("unsuccess")
+                console.log("unsuccess")
             }
         }
-        function loginerror(){
+        function loginerror()
+        {
             document.getElementById("wrong").style.display="";
             <?php $_SESSION['error'] = '';?>
         }
-        function onChange() {
+        function onChange() 
+        {
             const password = document.querySelector('input[name=newpass_word]');
             const confirm = document.querySelector('input[name=confirmpass_word]');
             const current = document.querySelector('input[name=currentpass_word]');
-           if(current.value != ''){ 
-            if (confirm.value === password.value) {
-                confirm.setCustomValidity('');
-            } else {
-                confirm.setCustomValidity('Passwords do not match');
-                
-            }
-          const current = document.querySelector('input[name=currentpass_word]');
-          if (current.value == <?php echo $_SESSION['password']?>) {
-                current.setCustomValidity('');
-            }else if(current.value == ''){
-                current.setCustomValidity('');   
-            } else {
-                current.setCustomValidity('Passwords does not match on current');
-             }
-            }else{
+           if(current.value != '')
+           { 
+                if (confirm.value === password.value) 
+                {
+                    confirm.setCustomValidity('');
+                }else 
+                {
+                    confirm.setCustomValidity('Passwords do not match');
+                }
+                const current = document.querySelector('input[name=currentpass_word]');
+                if (current.value == <?php echo $_SESSION['Password']?>) 
+                {
+                    current.setCustomValidity('');
+                }else if(current.value == '')
+                {
+                    current.setCustomValidity('');   
+                }else
+                {
+                    current.setCustomValidity('Passwords does not match on current');
+                }
+            }else
+            {
                 current.setCustomValidity('Please fill it up first');
             }
         }
     </script>
-     
-    
     </body>
 </html>

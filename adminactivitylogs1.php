@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 <?php
-require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION 
-  require_once('referencesession.php'); // ALL THE DATA
-  ?>
+    // Name of the module : adminactivitylogs1.php
+    // Module creation date : 02/05/21
+    // Author of the Module : Engr. Rian Canua
+    // Revision History : Rev 0  == DONE
+    // Description : this will handles the activity tab for admin as usertype
+    // Done aligning in module to PHQD020
+    require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION 
+    require_once('referencesession.php'); // ALL THE DATA
+?>
 <html lang="en">
-
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="">
-        <title>Request Monitoring System</title>
-        <link rel="icon" type="../image/png" href="images/favicon.ico" />
-
+        <title>Request Monitoring System</title><!-- Header of the module -->
+        <link rel="icon" type="image/png" href="images/favicon.ico" /><!-- Icon of the module -->
         <link rel="stylesheet" type="text/css" href="icons/themify-icons/themify-icons.css"><!-- Themify Icons CSS -->
         <link rel="stylesheet" type="text/css" href="icons/font-awesome/css/font-awesome.min.css"><!-- Font-awesome Icons CSS -->
-        
         <link href="assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->
         <link href="assets/sidebar-nav.min.css" rel="stylesheet"><!-- Menu CSS -->
         <link href="assets/css/style.css" rel="stylesheet"><!-- Custom CSS -->
@@ -24,11 +27,9 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <!-- ⭐⭐⭐ ADDITIONAL LINKS ⭐⭐⭐ -->
         <link href="css/formstyle.css" rel="stylesheet">
         <link href="plugins/bower_components/datatables/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-        <!-- <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" /> -->
-
     </head>
 
-    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['status'];?>">
+    <body class="fix-header" style="font-family:Century Gothic"onload="<?php echo $_SESSION['Status'];?>">
      <!-- ⭐⭐⭐ HEADER & SIDE BAR ⭐⭐⭐ -->
         <!-- Preloader -->
         <div class="preloader">
@@ -57,26 +58,24 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                     <!-- Dropdown User -->
                     <ul class="nav navbar-top-links navbar-right pull-right">
                         <li class="dropdown">
-                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="images/<?php echo $_SESSION['profpic']?>" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?php echo $_SESSION['firstname']?></b><span class="caret"></span> </a>
+                            <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#"> <img src="images/<?php echo $_SESSION['Profile_pic']?>" alt="user-img" width="36" class="img-circle"><b class="hidden-xs"><?php echo $_SESSION['First_name']?></b><span class="caret"></span> </a>
                             <ul class="dropdown-menu dropdown-user animated flipInY">
                                 <li>
                                     <div class="dw-user-box">
                                         <div class="row">
                                             <div class="col-sm-4">
-                                                <div class="u-img"><img src="images/<?php echo $_SESSION['profpic']?>" alt="user" /></div>
+                                                <div class="u-img"><img src="images/<?php echo $_SESSION['Profile_pic']?>" alt="user" /></div>
                                             </div>
                                             <div class="col-sm-8">
                                                 <div class="u-text">
-                                                    <p style="font-size:14px"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?></p>
-                                                    <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['usertype']?></small></p>
+                                                    <p style="font-size:14px"><?php echo $_SESSION['First_name']." ".$_SESSION['Last_name'];?></p>
+                                                    <p class="text-muted" style="text-transform: uppercase;"><small><?php echo $_SESSION['User_type']?></small></p>
                                                     <a href="#" class="btn btn-rounded btn-danger btn-xs">View Profile</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="adminmyprofile.php"><i class="ti-user"></i>&emsp;My Profile</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="adminaccountsetttings.php"><i class="ti-settings"></i>&emsp;Account Setting</a></li>
                                 <li role="separator" class="divider"></li>
@@ -97,8 +96,8 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                     <div class="row"><br></div>
                     <div class="user-profile">
                         <div class="dropdown user-pro-body">
-                            <div><a href="adminmyprofile.php"><img src="images/<?php echo $_SESSION['profpic']?>" alt="user-img" class="img-circle"></a></div>
-                            <h5 style="font-family:Century Gothic"><?php echo $_SESSION['firstname']." ".$_SESSION['lastname'];?><br><small style="text-transform: uppercase;" ><?php echo $_SESSION['usertype']?></small</h5>
+                            <div><a href="adminmyprofile.php"><img src="images/<?php echo $_SESSION['Profile_pic']?>" alt="user-img" class="img-circle"></a></div>
+                            <h5 style="font-family:Century Gothic"><?php echo $_SESSION['First_name']." ".$_SESSION['Last_name'];?><br><small style="text-transform: uppercase;" ><?php echo $_SESSION['User_type']?></small</h5>
                         </div>
                     </div>
                     <ul class="nav" id="side-menu">
@@ -199,12 +198,13 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                                             $no = 1;
                                             $dtes = explode(" ",$_GET['dte']);
                                             $dte = $dtes[0] . "%" .$dtes[1];
-                                            $userid = $_SESSION['userid'];
+                                            $userid = $_SESSION['User_id'];
                                               $counter =0;                                  
                                               $sql = "SELECT * FROM [requestmonitoring].[dbo].[activitylogs] WHERE
                                               activitydate like '$dte' order by activitydate desc, activitytime desc "; // sql for server
                                               $stmt = sqlsrv_query( $conn, $sql ); 
-                                              while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) ){
+                                              while( $row = sqlsrv_fetch_array( $stmt, SQLSRV_FETCH_ASSOC) )
+                                              {
                                                   $counter++;?>
                                                     <tr>
                                                     <td style="text-align:center;"><?php echo $counter ;?></td>
@@ -314,38 +314,45 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
         <script>
 
         //Date Filter
-            function tabledata(){
+            function tabledata()
+            {
                 var dte = document.getElementById("datepicker-autoclose").value;
                 var res = dte.split("/");
                 var mnth = res[0];
                 var mname = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                for(var i = 0; i<= 11; i++){
-                    if(mname[i] == mnth){
-                        if(i < 10){
+                for(var i = 0; i<= 11; i++)
+                {
+                    if(mname[i] == mnth)
+                    {
+                        if(i < 10)
+                        {
                             mnth = "0" + (i + 1);
-                        }
-                        else{
+                        }else
+                        {
                             mnth = i + 1;
                         }
                     }
                 }
                 var yr = res[1];
-                if(dte != "<?php echo date('F/Y')?>"){
+                if(dte != "<?php echo date('F/Y')?>")
+                {
                     window.location = "adminactivitylogs1.php?dte=" + mnth + "%" + yr + "&daten=" + dte;
-                }
-                else{
+                }else
+                {
                     window.location = "adminactivitylogs.php";
                 }
             }
         </script>
          <script>
-        $(document).ready(function(){
+        $(document).ready(function()
+        {
             $('[data-toggle="tooltip"]').tooltip();
             $('#myTable').DataTable(); 
         });
         // Date Picker
         jQuery('.mydatepicker, #datepicker').datepicker();
-        jQuery('#datepicker-autoclose').datepicker({
+        jQuery('#datepicker-autoclose').datepicker(
+        {
             format: "MM/yyyy",
             startView: "months", 
             minViewMode: "months",
@@ -356,7 +363,8 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
     </script>
 
     <script>
-    $(document).ready(function() {
+    $(document).ready(function() 
+    {
         $('#myTable').DataTable();
         $('#myTable2').DataTable();
         $('#myTable3').DataTable();
@@ -365,9 +373,12 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
         $('#myTable6').DataTable();
         $('#myTable7').DataTable();
         $('#myTable8').DataTable();
-        $(document).ready(function() {
-            var table = $('#example').DataTable({
-                "columnDefs": [{
+        $(document).ready(function() 
+        {
+            var table = $('#example').DataTable(
+            {
+                "columnDefs": [
+                {
                     "visible": false,
                     "targets": 2
                 }],
@@ -375,16 +386,21 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                     [2, 'asc']
                 ],
                 "displayLength": 25,
-                "drawCallback": function(settings) {
+                "drawCallback": function(settings) 
+                {
                     var api = this.api();
-                    var rows = api.rows({
+                    var rows = api.rows(
+                    {
                         page: 'current'
                     }).nodes();
                     var last = null;
-                    api.column(2, {
+                    api.column(2, 
+                    {
                         page: 'current'
-                    }).data().each(function(group, i) {
-                        if (last !== group) {
+                    }).data().each(function(group, i) 
+                    {
+                        if (last !== group) 
+                        {
                             $(rows).eq(i).before('<tr class="group"><td colspan="5">' + group + '</td></tr>');
                             last = group;
                         }
@@ -392,26 +408,32 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
                 }
             });
             // Order by the grouping
-            $('#example tbody').on('click', 'tr.group', function() {
+            $('#example tbody').on('click', 'tr.group', function() 
+            {
                 var currentOrder = table.order()[0];
-                if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
+                if (currentOrder[0] === 2 && currentOrder[1] === 'asc') 
+                {
                     table.order([2, 'desc']).draw();
-                } else {
+                } else 
+                {
                     table.order([2, 'asc']).draw();
                 }
             });
         });
     });
-    $('#example23').DataTable({
+    $('#example23').DataTable(
+    {
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ]
     });
-    $(document).ready(function(){
+    $(document).ready(function()
+    {
       var date_input=$('input[name="impdate"]'); //our date input has the name "inputdatereg"
       var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-      date_input.datepicker({
+      date_input.datepicker(
+    {
 			format: 'yyyy/mm/dd',
 			container: container,
 			todayHighlight: true,
@@ -419,23 +441,28 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
             endDate:"0m",
 		  });
     });
-    $(document).ready(function(){
+    $(document).ready(function()
+    {
       var fordatereq=0;
-    var fordaterec=0;
-      $('input[name="daterequested"]').datepicker({
+      var fordaterec=0;
+      $('input[name="daterequested"]').datepicker(
+      {
         format: 'yyyy/mm/dd',
         container: container,
         todayHighlight: true,
         autoclose: true,
         endDate:"0m",
-      }).on("changeDate", function (e) {
+      }).on("changeDate", function (e)
+      {
         fordatereq=this.value;
-        if(fordatereq>fordaterec){
+        if(fordatereq>fordaterec)
+        {
           document.getElementById("inputdate10").value=""; 
           document.getElementById("inputdate20").value=""; 
           fordatereq=0;
           fordaterec=0; 
-          $.toast({
+          $.toast(
+          {
             heading: 'ERROR',
             text: 'The date requested must be earlier than the date received',
             position: 'top-right',
@@ -444,45 +471,51 @@ require_once('FOLDERS/SES/SESADMIN.php'); // CONNECTION
             hideAfter: 4000,
             bgColor:'#fc050d',
             stack: false
-            });   
+          });   
         }
       });
     
 		var date_input=$('input[name="datereceived"]'); //our date input has the name "inputdatereg"
 		var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-		date_input.datepicker({
+		date_input.datepicker(
+        {
             format: 'yyyy/mm/dd',
             showAnim:'slideDown',
 			container: container,
 			todayHighlight: true,
             autoclose: true,
             endDate:"0m",
-		}).on("changeDate", function (e) {
-         fordaterec = this.value;
-        if(fordatereq==0){
-          document.getElementById("inputdate10").value=""; 
-          document.getElementById("inputdate20").value=""; 
-          $.toast({
-            heading: 'ERROR',
-            text: 'Please fill in the date requested first',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
+		}).on("changeDate", function (e) 
+        {
+          fordaterec = this.value;
+          if(fordatereq==0)
+          {
+            document.getElementById("inputdate10").value=""; 
+            document.getElementById("inputdate20").value=""; 
+            $.toast(
+            {
+                heading: 'ERROR',
+                text: 'Please fill in the date requested first',
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'warning',
+                hideAfter: 4000,
+                bgColor:'#fc050d',
+                stack: false
             });
-        }else if(fordatereq>fordaterec){     
-          document.getElementById("inputdate20").value="";  
-          $.toast({
-            heading: 'ERROR',
-            text: 'The date requested must be earlier than the date received',
-            position: 'top-right',
-            loaderBg: '#ff6849',
-            icon: 'warning',
-            hideAfter: 4000,
-            bgColor:'#fc050d',
-            stack: false
+          }else if(fordatereq>fordaterec)
+          {     
+            document.getElementById("inputdate20").value="";  
+            $.toast(
+            {
+                heading: 'ERROR',
+                text: 'The date requested must be earlier than the date received',
+                position: 'top-right',
+                loaderBg: '#ff6849',
+                icon: 'warning',
+                hideAfter: 4000,
+                bgColor:'#fc050d',
+                stack: false
             });   
           }
         });

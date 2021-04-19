@@ -1,337 +1,211 @@
 <?php
+    // Name of the module : updatedata.php
+    // Module creation date : 02/10/21
+    // Author of the Module : Engr. Rian Canua
+    // Revision History : Rev 0  == DONE
+    // Description : This module is created to update the current request in Master Control Paassword request .
+    // Done aligning in module to PHQD020
   require_once('../connect.php'); // CONNECTION 
   session_start();
-$userid                 = $_SESSION['userid']; 
-$username               = $_POST['user_name'];
-$firstname              = $_POST['first_name'];
-$middlename             = $_POST['middle_name'];
-$lastname               = $_POST['last_name'];
-$section_department     = $_POST['user_team'];
-$currentpassword        = $_POST['currentpass_word'];
-$currentpassword2       = md5($currentpassword);
-$newpassword            = $_POST['newpass_word'];
-$confirmpassword        = $_POST['confirmpass_word'];
-      $attachment       = $_FILES['user_image']['name'];
-      $attachment1      = $_FILES['user_image']['tmp_name'];
-      $fileext          = $_FILES['user_image']['type'];
-      $fileext1         = $_FILES['user_image']['size'];
-      $target           = "../images/".basename($attachment);
-      if (move_uploaded_file($attachment1 , $target)) {
-        $msg = "Image uploaded successfully";
-      }else{
-      $msg = "Failed to upload image";
-      $attachment=$_SESSION['profpic'];
-      }
-      // echo $currentpassword2."</br>";
-     if(empty($currentpassword)){
-       if(empty($newpassword)){
-        if(empty($confirmpassword)){
-            $password1 = $_SESSION['password'];
+  $user_id                 = $_SESSION['User_id']; 
+  $first_name              = $_POST['first_name'];
+  $middle_name             = $_POST['middle_name'];
+  $last_name               = $_POST['last_name'];
+  $section_department     = $_POST['user_team'];
+  $current_password        = $_POST['currentpass_word'];
+  $current_password_hashed       = md5($current_password);
+  $new_password            = $_POST['newpass_word'];
+  $confirm_password        = $_POST['confirmpass_word'];
+  // attachment cheking 
+  $attachment       = $_FILES['user_image']['name'];
+  $attachment_name      = $_FILES['user_image']['tmp_name'];
+  $file_extension          = $_FILES['user_image']['type'];
+  $file_size         = $_FILES['user_image']['size'];
+  $target           = "../images/".basename($attachment);
+  if (move_uploaded_file($attachment_name , $target))
+  {
+    $msg = "Image uploaded successfully";
+  }else
+  {
+    $msg = "Failed to upload image";
+    $attachment=$_SESSION['Profile_pic'];
+  } // if all the password data is empty 
+     if(empty($current_password))
+     {
+       if(empty($new_password))
+       {
+        if(empty($confirm_password))
+        {
+            $password1 = $_SESSION['Password'];
             $sql = "UPDATE requestmonitoring.dbo.logindata
-                    SET userid = '$userid' ,username='$username',firstname='$firstname',
-                    middlename='$middlename', lastname='$lastname',[section-department]='$section_department',
-                    password1='$password1',profpic='$attachment' WHERE userid='$userid' ";
+                    SET userid = '$user_id' , firstname='$first_name',
+                    middlename='$middle_name', lastname='$last_name',[section-department]='$section_department',
+                    password1='$password1',profpic='$attachment' WHERE userid='$user_id' ";
             $stmt = sqlsrv_query( $conn, $sql);
-            $_SESSION['password'] = $password1;
-            $_SESSION['profpic']  = $attachment;
-            $_SESSION['firstname']  = $firstname;
-            $_SESSION['middlename']  = $middlename;
-            $_SESSION['lastname']  = $lastname;
-            $_SESSION['section-department']  = $section_department;
-            $_SESSION['username']  = $username;
+            $_SESSION['Password'] = $password1;
+            $_SESSION['Profile_pic']  = $attachment;
+            $_SESSION['First_name']  = $first_name;
+            $_SESSION['Middle_name']  = $middle_name;
+            $_SESSION['Last_name']  = $last_name;
+            $_SESSION['Section_department']  = $section_department;
             date_default_timezone_set('Singapore');
-            $position = $_SESSION['position'];
-            $activitydate = date("m/d/Y");  
-            $activitytime = date("H:i:s");
-            $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has updated his profile. ";
-            $activitystatus = "success";
-            $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
+            $position = $_SESSION['Position'];
+            $activity_date = date("m/d/Y");  
+            $activity_time = date("H:i:s");
+            $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has updated his profile. ";
+            $activity_status = "success";
+            $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+                VALUES ('$user_id', '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
             $stmt = sqlsrv_query( $conn, $sql); 
-            if($_SESSION['usertype']=='admin'){
-              $_SESSION['status'] = 'success()';
-            header("Location: ../adminaccountsetting.php");
-            }else{
-              $_SESSION['status'] = 'success()';
-            header("Location: ../accountsetting.php");
+            if($_SESSION['User_type']=='admin')
+            {
+              $_SESSION['Status'] = 'success()';
+              header("Location: ../adminaccountsetting.php");
+            }else
+            {
+              $_SESSION['Status'] = 'success()';
+              header("Location: ../accountsetting.php");
             } 
-        }else{//invalid because of emptiness
-             date_default_timezone_set('Singapore');
-              $position = $_SESSION['position'];
-              $activitydate = date("m/d/Y");  
-              $activitytime = date("H:i:s");
-              $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "failed";
-              $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                  VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-              $stmt = sqlsrv_query( $conn, $sql);
-              if($_SESSION['usertype']=='admin'){
-                $_SESSION['status'] = 'invaliddata1()';
-              header("Location: ../adminaccountsetting.php");
-              }else{
-                $_SESSION['status'] = 'invaliddata1()';
-              header("Location: ../accountsetting.php");
-              } 
-        }
-       }else{//invalid because of emptiness
-              date_default_timezone_set('Singapore');
-              $position = $_SESSION['position'];
-              $activitydate = date("m/d/Y");  
-              $activitytime = date("H:i:s");
-              $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "failed";
-              $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                  VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-              $stmt = sqlsrv_query( $conn, $sql);
-              if($_SESSION['usertype']=='admin'){
-                $_SESSION['status'] = 'invaliddata1()';
-              header("Location: ../adminaccountsetting.php");
-              }else{
-                $_SESSION['status'] = 'invaliddata1()';
-              header("Location: ../accountsetting.php");
-              }
-       }
-     }else if($currentpassword2==$_SESSION['password']){
-          if(empty($newpassword) || $newpassword==" "){
-               date_default_timezone_set('Singapore');
-              $position = $_SESSION['position'];
-              $activitydate = date("m/d/Y");  
-              $activitytime = date("H:i:s");
-              $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "failed";
-              $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                  VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-              $stmt = sqlsrv_query( $conn, $sql);
-              if($_SESSION['usertype']=='admin'){
-                $_SESSION['status'] = 'invaliddata3()';
-              header("Location: ../adminaccountsetting.php");
-              }else{
-                $_SESSION['status'] = 'invaliddata3()';
-              header("Location: ../accountsetting.php");
-              } 
-          }else{
-            if($newpassword==$confirmpassword){
-              $password1 = md5($newpassword);
-              $sql = "UPDATE requestmonitoring.dbo.logindata
-                      SET userid = '$userid' ,username='$username',firstname='$firstname',
-                      middlename='$middlename', lastname='$lastname',[section-department]='$section_department',
-                      password1='$password1',profpic='$attachment' WHERE userid='$userid' ";
-              $stmt = sqlsrv_query( $conn, $sql);
-              $_SESSION['password'] = $password1;
-              $_SESSION['profpic']  = $attachment;
-              $_SESSION['firstname']  = $firstname;
-              $_SESSION['middlename']  = $middlename;
-              $_SESSION['lastname']  = $lastname;
-              $_SESSION['section-department']  = $section_department;
-              $_SESSION['username']  = $username;
-              date_default_timezone_set('Singapore');
-              $position = $_SESSION['position'];
-              $activitydate = date("m/d/Y");  
-              $activitytime = date("H:i:s");
-              $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has updated his profile. ";
-              $activitystatus = "success";
-              $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                  VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-              $stmt = sqlsrv_query( $conn, $sql);  
-              if($_SESSION['usertype']=='admin'){
-                $_SESSION['status'] = 'success()';
-              header("Location: ../adminaccountsetting.php");
-              }else{
-                $_SESSION['status'] = 'success()';
-              header("Location: ../accountsetting.php");
-              } 
-            }else{
-              date_default_timezone_set('Singapore');
-              $position = $_SESSION['position'];
-              $activitydate = date("m/d/Y");  
-              $activitytime = date("H:i:s");
-              $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-              $activitystatus = "failed";
-              $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                  VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-              $stmt = sqlsrv_query( $conn, $sql);
-              if($_SESSION['usertype']=='admin'){
-                $_SESSION['status'] = 'invaliddata4()';
-              header("Location: ../adminaccountsetting.php");
-              }else{
-                $_SESSION['status'] = 'invaliddata4()';
-              header("Location: ../accountsetting.php");
-              } 
-            }
-          }
-     }else{
+        }else
+        {//invalid because of lack of data needde for password update
           date_default_timezone_set('Singapore');
-          $position = $_SESSION['position'];
-          $activitydate = date("m/d/Y");  
-          $activitytime = date("H:i:s");
-          $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-          $activitystatus = "failed";
-          $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-              VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
+          $position = $_SESSION['Position'];
+          $activity_date = date("m/d/Y");  
+          $activity_time = date("H:i:s");
+          $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has failed to update his profile. ";
+          $activity_status = "failed";
+          $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+              VALUES ('$user_id', '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
           $stmt = sqlsrv_query( $conn, $sql);
-          if($_SESSION['usertype']=='admin'){
-            $_SESSION['status'] = 'invaliddata2()';
+          if($_SESSION['User_type']=='admin')
+          {
+            $_SESSION['Status'] = 'invaliddata1()';
+            header("Location: ../adminaccountsetting.php");
+          }else
+          {
+            $_SESSION['Status'] = 'invaliddata1()';
+            header("Location: ../accountsetting.php");
+          } 
+        }
+      }else
+      {//invalid because of lack of data needde for password update
+          date_default_timezone_set('Singapore');
+          $position = $_SESSION['Position'];
+          $activity_date = date("m/d/Y");  
+          $activity_time = date("H:i:s");
+          $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has failed to update his profile. ";
+          $activity_status = "failed";
+          $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+              VALUES ('$user_id', '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
+          $stmt = sqlsrv_query( $conn, $sql);
+          if($_SESSION['User_type']=='admin')
+          {
+            $_SESSION['Status'] = 'invaliddata1()';
+            header("Location: ../adminaccountsetting.php");
+          }else
+          {
+            $_SESSION['Status'] = 'invaliddata1()';
+          header("Location: ../accountsetting.php");
+          }
+       }
+    }else if($current_password_hashed==$_SESSION['Password'])
+    {//check of the password
+      if(empty($new_password) || $new_password==" ")
+      {
+        date_default_timezone_set('Singapore');
+        $position = $_SESSION['Position'];
+        $activity_date = date("m/d/Y");  
+        $activity_time = date("H:i:s");
+        $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has failed to update his profile. ";
+        $activity_status = "failed";
+        $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+            VALUES ('$user_id', '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
+        $stmt = sqlsrv_query( $conn, $sql);
+        if($_SESSION['User_type']=='admin')
+        {
+          $_SESSION['Status'] = 'invaliddata3()';
           header("Location: ../adminaccountsetting.php");
-          }else{
-            $_SESSION['status'] = 'invaliddata2()';
+        }else
+        {
+          $_SESSION['Status'] = 'invaliddata3()';
+          header("Location: ../accountsetting.php");
+        } 
+      }else
+      {
+        if($new_password==$confirm_password)
+        {
+          $password1 = md5($new_password);
+          // echo $password1 ." == ". md5($confirm_password); 
+          // $password1 = md5($new_password);
+          $sql = "UPDATE requestmonitoring.dbo.logindata
+                  SET userid = '$user_id' ,firstname='$first_name',
+                  middlename='$middle_name', lastname='$last_name',[section-department]='$section_department',
+                  password1='$password1',profpic='$attachment' WHERE userid='$user_id' ";
+          $stmt = sqlsrv_query( $conn, $sql);
+          $_SESSION['Password'] = $password1;
+          $_SESSION['Profile_pic']  = $attachment;
+          $_SESSION['First_name']  = $first_name;
+          $_SESSION['Middle_name']  = $middle_name;
+          $_SESSION['Last_name']  = $last_name;
+          $_SESSION['Section_department']  = $section_department;
+          date_default_timezone_set('Singapore');
+          $position = $_SESSION['Position'];
+          $activity_date = date("m/d/Y");  
+          $activity_time = date("H:i:s");
+          $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has updated his profile. ";
+          $activity_status = "success";
+          $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+              VALUES ('$user_id' , '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
+          $stmt = sqlsrv_query( $conn, $sql);  
+          if($_SESSION['User_type']=='admin')
+          {
+            $_SESSION['Status'] = 'success()';
+          header("Location: ../adminaccountsetting.php");
+          }else
+          {
+            $_SESSION['Status'] = 'success()';
           header("Location: ../accountsetting.php");
           } 
+        }else
+        {
+          date_default_timezone_set('Singapore');
+          $position = $_SESSION['Position'];
+          $activity_date = date("m/d/Y");  
+          $activity_time = date("H:i:s");
+          $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has failed to update his profile. ";
+          $activity_status = "failed";
+          $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+              VALUES ('$user_id', '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
+          $stmt = sqlsrv_query( $conn, $sql);
+          if($_SESSION['User_type']=='admin')
+          {
+            $_SESSION['Status'] = 'invaliddata4()';
+            header("Location: ../adminaccountsetting.php");
+          }else
+          {
+            $_SESSION['Status'] = 'invaliddata4()';
+            header("Location: ../accountsetting.php");
+          } 
+        }
+      }
+     }else{// update data
+          date_default_timezone_set('Singapore');
+          $position = $_SESSION['Position'];
+          $activity_date = date("m/d/Y");  
+          $activity_time = date("H:i:s");
+          $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has failed to update his profile. ";
+          $activity_status = "failed";
+          $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+              VALUES ('$user_id', '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
+          $stmt = sqlsrv_query( $conn, $sql);
+          if($_SESSION['User_type']=='admin')
+          {
+            $_SESSION['Status'] = 'invaliddata2()';
+            header("Location: ../adminaccountsetting.php");
+          }else
+          {
+            $_SESSION['Status'] = 'invaliddata2()';
+            header("Location: ../accountsetting.php");
+          } 
      }
-      // if(empty($currentpassword)){
-      //   if(empty($newpassword)){
-      //     $password = $_SESSION['password'];
-      //     $_SESSION['password'] = $password;
-      //   $sql = "UPDATE requestmonitoring.dbo.logindata
-      //           SET userid = '$userid' ,username='$username',firstname='$firstname',
-      //           middlename='$middlename', lastname='$lastname',[section-department]='$section_department',
-      //           password1='$password1',profpic='$attachment' WHERE userid='$userid' ";
-      //   $stmt = sqlsrv_query( $conn, $sql);
-      //   // echo "SUCCESSSFUL";
-      //   // $_SESSION['password'] = $password;
-      //   $_SESSION['profpic']  = $attachment;
-      //   $_SESSION['firstname']  = $firstname;
-      //   $_SESSION['middlename']  = $middlename;
-      //   $_SESSION['lastname']  = $lastname;
-      //   $_SESSION['section-department']  = $section_department;
-      //   $_SESSION['username']  = $username;
-      //   date_default_timezone_set('Singapore');
-      //   $position = $_SESSION['position'];
-      //   $activitydate = date("m/d/Y");  
-      //   $activitytime = date("H:i:s");
-      //   $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has updated his profile. ";
-      //   $activitystatus = "success";
-      //   $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-      //       VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-      //   $stmt = sqlsrv_query( $conn, $sql);  
-      //   $_SESSION['status'] = 'success()';
-      //   header("Location: ../accountsetting.php");
-      //   }
-      // }else if($currentpassword2 == $_SESSION['password']){
-      //   if(empty($newpassword)){
-      //     date_default_timezone_set('Singapore');
-      //   $position = $_SESSION['position'];
-      //   $activitydate = date("m/d/Y");  
-      //   $activitytime = date("H:i:s");
-      //   $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-      //   $activitystatus = "success";
-      //   $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-      //       VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-      //   $stmt = sqlsrv_query( $conn, $sql);
-      //     $_SESSION['status'] = 'invalid()';
-      //     header("Location: ../accountsetting.php");
-      //   }else if($newpassword==$confirmpassword){
-      //       $password = md5($newpassword);
-      //       $_SESSION['password'] = $password;
-      //   $sql = "UPDATE requestmonitoring.dbo.logindata
-      //           SET userid = '$userid' ,username='$username',firstname='$firstname',
-      //           middlename='$middlename', lastname='$lastname',[section-department]='$section_department',
-      //           password1='$password',profpic='$attachment' WHERE userid='$userid' ";
-      //   $stmt = sqlsrv_query( $conn, $sql);
-      //   // echo "SUCCESSSFUL";
-      //   // $_SESSION['password'] = $password;
-      //   $_SESSION['profpic']  = $attachment;
-      //   $_SESSION['firstname']  = $firstname;
-      //   $_SESSION['middlename']  = $middlename;
-      //   $_SESSION['lastname']  = $lastname;
-      //   $_SESSION['section-department']  = $section_department;
-      //   $_SESSION['username']  = $username;
-      //   date_default_timezone_set('Singapore');
-      //   $position = $_SESSION['position'];
-      //   $activitydate = date("m/d/Y");  
-      //   $activitytime = date("H:i:s");
-      //   $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has updated his profile. ";
-      //   $activitystatus = "success";
-      //   $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-      //       VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-      //   $stmt = sqlsrv_query( $conn, $sql);  
-      //   $_SESSION['status'] = 'success()';
-      //   header("Location: ../accountsetting.php");
-      //   }else{
-      //     date_default_timezone_set('Singapore');
-      //   $position = $_SESSION['position'];
-      //   $activitydate = date("m/d/Y");  
-      //   $activitytime = date("H:i:s");
-      //   $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-      //   $activitystatus = "success";
-      //   $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-      //       VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-      //   $stmt = sqlsrv_query( $conn, $sql);
-      //     $_SESSION['status'] = 'invalid2()';
-      //   header("Location: ../accountsetting.php");
-      //   }
-      // }else{
-      //   date_default_timezone_set('Singapore');
-      //   $position = $_SESSION['position'];
-      //   $activitydate = date("m/d/Y");  
-      //   $activitytime = date("H:i:s");
-      //   $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has failed to update his profile. ";
-      //   $activitystatus = "success";
-      //   $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-      //       VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-      //   $stmt = sqlsrv_query( $conn, $sql);
-      //   $_SESSION['status'] = 'invalid1()';
-      //   header("Location: ../accountsetting.php");
-      // }
-        
-    //   if($currentpassword2 != $_SESSION['password']){
-    //     if(empty($currentpassword)){
-    //       $password = $_SESSION['password'];
-    //     }else if(empty($newpassword)){
-    //         $password = $_SESSION['password'];
-    //       }
-    // }else{
-    //   echo "correct password";
-    // }
-      // echo $password;
-      //   $_SESSION['status'] = 'invalid1()';
-      //    header("Location: ../accountsetting.php");
-      // }else if(empty($newpassword)){
-      //   $password = $_SESSION['password'];
-      // }else if(empty($confirmpassword)){
-      //   $password = $_SESSION['password'];
-      // }else if($newpassword != $confirmpassword){
-      //   $_SESSION['status'] = 'invalid2()';
-      //    header("Location: ../accountsetting.php");
-      // }else{
-      //   $password = md5($newpassword);
-      // }
-      // echo $password."</br>";
-      // echo $currentpassword2;
-
-      // $password1=md5(2009011);
-//       echo  $newpassword. "</br>";
-//       echo  $confirmpassword. "</br>";
-// echo  "Profile Picture : ".$attachment. "</br>";
-// echo  "User ID : ".$userid. "</br>";
-// echo  "Firstname  : ".$firstname ."</br>";
-// echo  "Middle name : ".$middlename ."</br>";
-// echo  "Lastname : ".$lastname ."</br>";
-// echo  "Section - Department : ".$section_department ."</br>";
-// echo  "Username : ".$username ."</br>";
-// echo  "Password : ".$password ."</br>";
-// $_SESSION['password'] = $password;
-// $sql = "UPDATE requestmonitoring.dbo.logindata
-//                 SET userid = '$userid' ,username='$username',firstname='$firstname',
-//                 middlename='$middlename', lastname='$lastname',[section-department]='$section_department',
-//                 password1='$password1',profpic='$attachment' WHERE userid='$userid' ";
-//         $stmt = sqlsrv_query( $conn, $sql);
-//         // echo "SUCCESSSFUL";
-//         // $_SESSION['password'] = $password;
-//         $_SESSION['profpic']  = $attachment;
-//         $_SESSION['firstname']  = $firstname;
-//         $_SESSION['middlename']  = $middlename;
-//         $_SESSION['lastname']  = $lastname;
-//         $_SESSION['section-department']  = $section_department;
-//         $_SESSION['username']  = $username;
-//         date_default_timezone_set('Singapore');
-//         $position = $_SESSION['position'];
-//         $activitydate = date("m/d/Y");  
-//         $activitytime = date("H:i:s");
-//         $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has updated his profile. ";
-//         $activitystatus = "success";
-//         $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-//             VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-//         // $stmt = sqlsrv_query( $conn, $sql);  
-//         $_SESSION['status'] = 'success()';
-//         header("Location: ../accountsetting.php");
-// ?>
+?>

@@ -1,20 +1,27 @@
 <?php
+    // Name of the module : logout.php
+    // Module creation date : 11/24/20
+    // Author of the Module : Engr. Rian Canua
+    // Revision History : Rev 0  == DONE
+    // Description : This module clears the session and redirect its page to the login page
+    // Done aligning in module to PHQD020
     session_start();
     require_once('connect.php'); // CONNECTION 
             date_default_timezone_set('Singapore');
-              $userid = $_SESSION['userid'];
-              $username = $_SESSION['username']; 
-              $firstname = $_SESSION['firstname'];
-              $lastname = $_SESSION['lastname'];
-              $position = $_SESSION['position'];
-              $activitydate = date("m/d/Y");  
-              $activitytime = date("H:i:s");
-              $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " has log out. ";
-              $activitystatus = "success";
-              $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                  VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-              $stmt = sqlsrv_query( $conn, $sql);
-    $_SESSION['e']="";
-    session_destroy();
-    header('location:login.php');
+            //**** */
+            $user_id         = $_SESSION['User_id'];
+            $first_name      = $_SESSION['First_name'];
+            $last_name       = $_SESSION['Last_name'];
+            $position        = $_SESSION['Position'];
+            //**** */
+            $activity_date   = date("m/d/Y");  
+            $activity_time   = date("H:i:s");
+            $activity_details= $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " has logged out. ";
+            $activity_status = "success";
+            $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, firstname, lastname, position, activitydate, activitytime, activitydetails, activitystatus)
+                  VALUES ('$user_id', '$first_name', '$last_name', '$position', '$activity_date', '$activity_time', '$activity_details', '$activity_status');";
+            $stmt = sqlsrv_query( $conn, $sql);
+            $_SESSION['e']="";
+            session_destroy();
+            header('location:login.php');
 ?>

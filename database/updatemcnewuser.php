@@ -1,91 +1,83 @@
 <?php
-        require_once('../connect.php'); // CONNECTION 
-        session_start();
-        $requestnumber    =$_POST['requestnumber'];
-        $addedby          =$_SESSION['userid'];
-        $requestor        =$_POST['requestor'];
-        $deptsect         =$_POST['deptsect'];
-        $systemusername   =$_POST['systemusername'];
-        $systemuser       =$_POST['systemuser'];
-        $daterequested    =$_POST['daterequested'];
-        $datereceived     =$_POST['datereceived'];
-        $usertype         =$_POST['usertype'];
-        $dateregistered   =$_POST['dateregistered'];
-        $infocard         =$_POST['infocard'];
-        $remarks          =$_POST['remarks'];
-        //attachments
-        $attachment       = $_FILES['attachment']['name'];
-        $attachment1      =$_FILES['attachment']['tmp_name'];
-        $fileext          = $_FILES["attachment"]["type"];
-        $fileext1         = $_FILES["attachment"]["size"];
-        $target = "../images/".basename($attachment);
-                if($fileext=="image/png" || $fileext=="image/jpeg" || $fileext=="image/jpg" || 
-                    $fileext=="application/pdf" and $_FILES['attachment']['size']<4000000 ){
-                if (move_uploaded_file($attachment1 , $target)) {
-                //   $msg = "Image uploaded successfully";
-                //   echo $msg;
-                  $_SESSION['status'] = 'success()'; 
-                // header("Location: http://localhost/FORMS/addform.php");
-               }else{
-                 $msg = "Failed to upload image";
-                 echo $msg;
-                 $_SESSION['status'] = 'invalid()'; 
-                 header("Location: http://localhost/FORMS/addform.php");
-               }
-              }else{
-                $_SESSION['status'] = 'invalid()'; 
-                header("Location: http://localhost/FORMS/addform.php");
-              }
-        // echo "request number :" .$requestnumber."<br/>";            
-        // echo "addedby :".$addedby."<br/>";
-        // echo "requestor :".$requestor."<br/>";
-        // echo "department-section :".$deptsect."<br/>";
-        // echo "systemusername :".$systemusername."<br/>";
-        // echo "systemuser :".$systemuser."<br/>";
-        // echo "date requested :".$daterequested."<br/>";
-        // echo "date received :".$datereceived."<br/>";
-        // echo "usertype :".$usertype."<br/>";
-        // echo "date registered :".$dateregistered."<br/>";
-        // echo "infocard :".$infocard."<br/>";
-        // echo "remarks :".$remarks."<br/>";
-        // echo "attachment :".$attachment."<br/>";
-        // echo "<br/><br/>";
-        $sql = "SELECT * FROM [requestmonitoring].[dbo].[mcnewuser] WHERE requestnumber = '$requestnumber' "; // sql for server
-        $stmt = sqlsrv_query( $conn, $sql ); 
-         if($row_count = sqlsrv_has_rows( $stmt )>0){
-                 date_default_timezone_set('Singapore');
-                     $userid = $_SESSION['userid'];
-                     $username = $_SESSION['username']; 
-                     $firstname = $_SESSION['firstname'];
-                     $lastname = $_SESSION['lastname'];
-                     $position = $_SESSION['position'];
-                     $activitydate = date("m/d/Y");  
-                     $activitytime = date("H:i:s");
-                     $activitydetails = $_SESSION['firstname']." ".$_SESSION['lastname']." with user ID ".$_SESSION['userid']. " updated the request with request number $requestnumber. ";
-                     $activitystatus = "success";
-                     $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
-                         VALUES ('$userid', '$username' , '$firstname','$lastname','$position','$activitydate','$activitytime','$activitydetails','$activitystatus');";
-                     $stmt = sqlsrv_query( $conn, $sql);
-         }
-        $sql = "UPDATE requestmonitoring.dbo.mcnewuser
-        SET userid = '$addedby' ,requestor='$requestor' ,[department-section] = '$deptsect' , systemusername='$systemusername',
-        systemuser='$systemuser',usertype='$usertype',daterequested='$daterequested',datereceived='$datereceived',
-        dateregistered='$dateregistered',infocard='$infocard',remarks='$remarks',attachment='$attachment' 
-        WHERE requestnumber = '$requestnumber' ";
-        $stmt = sqlsrv_query( $conn, $sql);
-        if($_SESSION['usertype']=='admin'){
-          $_SESSION['confirmation'] = 'success()';
-          header("location:../searchandupdate/adminMCNewUser_Requests.php");
-        }else{
-          $_SESSION['confirmation'] = 'success()';
-          header("location:../searchandupdate/MCNewUser_Requests.php");
-        }
-        if ( $stmt ){    
-        $something = "Submission successful.";
-
-        }else{    
-        $something = "Submission unsuccessful.";
-        die( print_r( sqlsrv_errors(), true));    
-        }//else stmt
-
+    // Name of the module : updatedata.php
+    // Module creation date : 01/21/21
+    // Author of the Module : Engr. Rian Canua
+    // Revision History : Rev 0  == DONE
+    // Description : This module is created to update the current request in Master Control New User .
+    // Done aligning in module to PHQD020
+    require_once('../connect.php'); // CONNECTION 
+    session_start();
+    $request_number    =$_POST['requestnumber'];
+    $added_by          =$_SESSION['User_id'];
+    $requestor        =$_POST['requestor'];
+    $department_section         =$_POST['deptsect'];
+    $system_username   =$_POST['systemusername'];
+    $system_user       =$_POST['systemuser'];
+    $date_requested    =$_POST['daterequested'];
+    $date_received     =$_POST['datereceived'];
+    $user_type         =$_POST['usertype'];
+    $date_registered   =$_POST['dateregistered'];
+    $info_card         =$_POST['infocard'];
+    $remarks          =$_POST['remarks'];
+    //attachments
+    $attachment       = $_FILES['attachment']['name'];
+    $attachment_name      =$_FILES['attachment']['tmp_name'];
+    $file_extension          = $_FILES["attachment"]["type"];
+    $file_size         = $_FILES["attachment"]["size"];
+    $target = "../images/".basename($attachment);
+    if($file_extension=="image/png" || $file_extension=="image/jpeg" || $file_extension=="image/jpg" || 
+        $file_extension=="application/pdf" and $_FILES['attachment']['size']<4000000 )
+    {
+      if (move_uploaded_file($attachment_name , $target)) 
+      {
+          $_SESSION['Status'] = 'success()'; 
+      }else
+      {
+          $msg = "Failed to upload image";
+          echo $msg;
+          $_SESSION['Status'] = 'invalid()'; 
+      }
+    }else
+    {
+      $_SESSION['Status'] = 'invalid()'; 
+    }
+    $sql = "SELECT * FROM [requestmonitoring].[dbo].[mcnewuser] WHERE requestnumber = '$request_number' "; // sql for server
+    $stmt = sqlsrv_query( $conn, $sql ); 
+    if($row_count = sqlsrv_has_rows( $stmt )>0)
+    {
+      date_default_timezone_set('Singapore');
+      $user_id = $_SESSION['User_id'];
+      $username = $_SESSION['username']; 
+      $first_name = $_SESSION['First_name'];
+      $last_name = $_SESSION['Last_name'];
+      $position = $_SESSION['Position'];
+      $activity_date = date("m/d/Y");  
+      $activity_time = date("H:i:s");
+      $activity_details = $_SESSION['First_name']." ".$_SESSION['Last_name']." with user ID ".$_SESSION['User_id']. " updated the request with request number $request_number. ";
+      $activity_status = "success";
+      $sql="INSERT INTO requestmonitoring.dbo.activitylogs(userid, username, firstname, lastname, position, activitydate,activitytime,activitydetails,activitystatus)
+          VALUES ('$user_id', '$username' , '$first_name','$last_name','$position','$activity_date','$activity_time','$activity_details','$activity_status');";
+      $stmt = sqlsrv_query( $conn, $sql);
+    }
+    $sql = "UPDATE requestmonitoring.dbo.mcnewuser
+    SET userid = '$added_by' ,requestor='$requestor' ,[department-section] = '$department_section' , systemusername='$system_username',
+    systemuser='$system_user',usertype='$user_type',daterequested='$date_requested',datereceived='$date_received',
+    dateregistered='$date_registered',infocard='$info_card',remarks='$remarks',attachment='$attachment' 
+    WHERE requestnumber = '$request_number' ";
+    $stmt = sqlsrv_query( $conn, $sql);
+    if($_SESSION['User_type']=='admin'){
+      $_SESSION['Confirmation'] = 'success()';
+      header("location:../searchandupdate/adminMCNewUser_Requests.php");
+    }else{
+      $_SESSION['Confirmation'] = 'success()';
+      header("location:../searchandupdate/MCNewUser_Requests.php");
+    }
+    if ( $stmt )
+    {    
+    $something = "Submission successful.";
+    }else
+    {    
+    $something = "Submission unsuccessful.";
+    die( print_r( sqlsrv_errors(), true));    
+    }//else stmt
 ?>
